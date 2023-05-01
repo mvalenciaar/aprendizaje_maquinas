@@ -5,6 +5,7 @@ Este repositorio se crea para fines académicos para la asignatura de aprendizaj
 
 ### **Estudiantes**
 - Daniel Chanci Restrepo: dchancir@unal.edu.co
+- David Duque Uribe: daduqueu@unal.edu.co
 - Maria Victoria Valencia Arango: mvalenciaar@unal.edu.co
 
 ### **Descripción del dataset:**
