@@ -10,22 +10,26 @@ Este repositorio se crea para fines académicos para la asignatura de aprendizaj
 
 ### **Descripción del dataset:**
 #### **Análisis de opinión sobre reseñas de películas / Sentiment Analysis on Movie Reviews**
-El conjunto de datos se compone de archivos separados por tabuladores con frases del conjunto de datos Rotten Tomatoes. Se ha conservado la división entrenamiento/prueba a efectos de evaluación comparativa, pero las frases se han desordenado respecto a su orden original. El analizador sintáctico de Stanford ha dividido cada oración en varias frases. Cada frase tiene un PhraseId. Cada frase tiene un SentenceId. Las frases que se repiten (como las palabras cortas/comunes) sólo se incluyen una vez en los datos.
 
-- `train.tsv` contiene las frases y sus etiquetas de sentimiento asociadas. Además, hemos proporcionado un SentenceId para que pueda saber qué frases pertenecen a una única oración.
-- `test.tsv` contiene sólo frases. Debe asignar una etiqueta de sentimiento a cada frase.
+Este dataset IMDB (Intenet Movie DataBase) contiene 50.000 reseñas de películas para el procesamiento de lenguaje natural y la analítica de texto; el dataset se encuentra disponible en la Universidad de Standford (link`http://ai.stanford.edu/~amaas/data/sentiment/`).
 
-Las etiquetas de sentimiento son:
+El Dataset presenta un reto de clasificación de sentimientos binario y está dividido de la siguiente manera:
+- 25.000 reseñas para entrenamiento 
+- 25.000 reseñas para testeo
 
-0 - negativo
-1 - algo negativo
-2 - neutral
-3 - algo positivo
-4 - positivo
+Por recomendación de los autores, se sugiere que al momento de utilizar este dataset se referencie así:
+Andrew L. Maas, Raymond E. Daly, Peter T. Pham, Dan Huang, Andrew Y. Ng, and Christopher Potts. (2011). Learning Word Vectors for Sentiment Analysis. The 49th Annual Meeting of the Association for Computational Linguistics (ACL 2011).
 
-El dataset fue obtenido de la plataforma Kaggle.
+La estructura de los datos, consta de dos columnas:
+- `review` cuenta con tipo de dato String. Este contiene las reseñas de películas en idioma inglés.
+- `sentiment` que contiene dos posibles valores: positive y negative.
+
+**Limitantes:**
+- Las reseñas deben estar en el idioma inglés, por lo que si se desea incluir reseñas en otro idioma, los modelos de estudio no lograrán obtener el aprendizaje deseado, ya que deben ser compatibles con el mismo idioma.
 
 ### **Metodología:**
+
+
 
 ### **Presentación de resultados y uso de métricas:**
 
