@@ -209,4 +209,4 @@ def process_data():
     df_raw['review']=df_raw['review'].apply(remove_stopwords)
     print ('Después de remover stopwords .. \n',df_raw['review'][2])
 
-    return df_raw.to_csv('IMDB_reviews_cleaned.csv', index = False)
+    return df_raw #.to_csv('IMDB_reviews_cleaned.csv', index = False)
