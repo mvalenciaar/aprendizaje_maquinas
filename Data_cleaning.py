@@ -23,7 +23,9 @@ else:
 
 
 def process_data():
-    """Descarga de corpus necesarios para hacer el procesamiento de lenguaje natural"""
+    """
+    Descarga de corpus necesarios para hacer el procesamiento de lenguaje natural
+    """
     nltk.download('wordnet')  
     nltk.download('punkt')
     nltk.download('averaged_perceptron_tagger')
