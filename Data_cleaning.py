@@ -1,3 +1,4 @@
+"""Importar librerías de trabajo"""
 import numpy as np
 import pandas as pd
 import re
@@ -5,9 +6,13 @@ from bs4 import BeautifulSoup
 import seaborn as sns
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud, STOPWORDS
-
 import nltk
 import ssl
+from nltk.stem import WordNetLemmatizer
+from nltk.corpus import stopwords, wordnet
+from nltk.stem.porter import PorterStemmer
+from nltk.tokenize import word_tokenize
+from nltk.tokenize.toktok import ToktokTokenizer
 
 try:
     _create_unverified_https_context = ssl._create_unverified_context
@@ -16,78 +21,96 @@ except AttributeError:
 else:
     ssl._create_default_https_context = _create_unverified_https_context
 
-from nltk.stem import WordNetLemmatizer
-from nltk.corpus import stopwords, wordnet
-from nltk.stem.porter import PorterStemmer
-from nltk.tokenize import word_tokenize
-from nltk.tokenize.toktok import ToktokTokenizer
 
 def process_data():
-    #Se descargan los corpus necesarios para hacer el procesamiento de lenguaje natural
+    """Descarga de corpus necesarios para hacer el procesamiento de lenguaje natural"""
     nltk.download('wordnet')  
     nltk.download('punkt')
     nltk.download('averaged_perceptron_tagger')
 
-    #Se lee el dataset
+    """Lectura del dataset"""
     df_raw = pd.read_csv('./IMDB Dataset.csv')
     df_raw.head()
 
-    #Por facilidad, se va a utilizar 1 para reseñas positivas y cero para negativas
+    """Marcación de 1 "uno" para reseñas positivas y 0 "cero" para negativas"""
     df_raw['sentiment'].replace(['positive', 'negative'], [1, 0], inplace = True)
     df_raw.head()
 
-    #Se procede a revisar si hay valores duplicados o valores nulos
+    """Validación de valores duplicados o nulos"""
     duplicates = df_raw[df_raw.duplicated()]
     df_raw.isnull().sum()
     df_raw.drop_duplicates(inplace=True)
 
-    #Se grafica la distribución para ver que no haya desbalanceo de datos
+    """Gráfica de distribución para evaluar si existe desbalanceo de datos"""
     print(sns.countplot(x=df_raw['sentiment']))
 
-    #LIMPIEZA LAS DE RESEÑAS
-
+    """Limpieza de reseñas"""
     stopword_list=nltk.corpus.stopwords.words('english')
     stop=set(stopwords.words('english'))
 
     def strip_html(text):
-        '''Remueve etiquetas HTML'''
+        '''
+        Eliminación de etiquetas HTML
+        '''
         soup = BeautifulSoup(text, "html.parser")
         return soup.get_text()
 
     def remove_between_square_brackets(text):
-        '''Remueve corchetes'''
+        '''
+        Eliminación de corchetes
+        '''
         return re.sub('\[[^]]*\]', '', text)
 
     def denoise_text(text):
+        """
+        Eliminación tags de e-mail y corchetes
+        """
         text = strip_html(text)
         text = remove_between_square_brackets(text)
         return text
 
     def remove_Emails(text):
+        """
+        Eliminación de e-mai
+        l"""
         pattern=r'\S+@\S+'
         text=re.sub(pattern,'',text)
         return text
 
     def remove_URLS(text):
-        '''Remueve etiquetas asociadas a URLs'''
+        '''
+        Eliminación de  etiquetas de URLs
+        '''
         pattern=r'http\S+'
         text=re.sub(pattern,'',text)
         return text
 
     def remove_special_characters(text, remove_digits=True):
+        """
+        Eliminación de caracteres especiales
+        """
         pattern=r'[^a-zA-z0-9\s]'
         text=re.sub(pattern,'',text)
         return text
 
     def remove_numbers(text):
+        """
+        Eliminación de números
+        """
         pattern = r'\d+'
         text = re.sub(pattern, '', text)
         return text
 
     def lowercase_text(text):
+        """
+        Convertir texto a minúscula
+        """
         return text.lower()
 
     def reviewsCleaning(df):
+        """
+        Limpieza de revisiones
+        """
         df['review']=df['review'].apply(denoise_text)
         df['review']=df['review'].apply(remove_URLS)
         df['review']=df['review'].apply(remove_Emails)
@@ -105,7 +128,9 @@ def process_data():
     nltk.download('stopwords')
 
     def wordcloud_draw(data, color, s):
-        '''Se va a crear una nube de palabras para verificar las palabras más comunes en los dos tipos de reseñas'''
+        '''
+        Creación de nube de palabras, donde se verifican palabras comunes en los dos tipos de reseñas
+        '''
         words = ' '.join(data)
         cleaned_word = " ".join([word for word in words.split() if(word!='movie' and word!='film')])
         wordcloud = WordCloud(stopwords=STOPWORDS,background_color=color,width=2500,height=2000).generate(cleaned_word)
@@ -122,7 +147,9 @@ def process_data():
     plt.show()
 
     def get_wordnet_pos(tag):
-        """Mapeo del etiquetado gramatical para el proceso de lematización"""
+        """
+        Mapeo del etiquetado gramatical para el proceso de lematización
+        """
         if tag.startswith('J'):
             return wordnet.ADJ
         elif tag.startswith('V'):
@@ -136,7 +163,7 @@ def process_data():
 
     def preprocess_review(review):
         """
-        Preprocesa las reseñas unsando la técnica de lematización
+        Preprocesado de reseñas usando la técnica de lematización
         """
         lemmatizer = WordNetLemmatizer()
         # Tokeniza las reseñas en palabras
@@ -164,7 +191,9 @@ def process_data():
     tokenizer=ToktokTokenizer()
 
     def remove_stopwords(text, is_lower_case=True):
-        '''Se remueven palabras comunes (articulos, preposiciones, pronombres) que no aporten mucha información al texto'''
+        '''
+        Se remueven palabras comunes innecesarias (articulos, preposiciones, pronombres)
+        '''
         tokens = tokenizer.tokenize(text)
         tokens = [token.strip() for token in tokens]
         if is_lower_case:
