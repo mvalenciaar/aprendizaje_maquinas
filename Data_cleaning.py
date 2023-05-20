@@ -3,15 +3,10 @@ import numpy as np
 import pandas as pd
 import re
 from bs4 import BeautifulSoup
-import seaborn as sns
-import matplotlib.pyplot as plt
-from wordcloud import WordCloud, STOPWORDS
 import nltk
 import ssl
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords, wordnet
-from nltk.stem.porter import PorterStemmer
-from nltk.tokenize import word_tokenize
 from nltk.tokenize.toktok import ToktokTokenizer
 
 try:
@@ -22,7 +17,7 @@ else:
     ssl._create_default_https_context = _create_unverified_https_context
 
 
-def process_data():
+def clean_data():
     """
     Descarga de corpus necesarios para hacer el procesamiento de lenguaje natural
     """
@@ -42,13 +37,6 @@ def process_data():
     duplicates = df_raw[df_raw.duplicated()]
     df_raw.isnull().sum()
     df_raw.drop_duplicates(inplace=True)
-
-    """Gráfica de distribución para evaluar si existe desbalanceo de datos"""
-    print(sns.countplot(x=df_raw['sentiment']))
-
-    """Limpieza de reseñas"""
-    stopword_list=nltk.corpus.stopwords.words('english')
-    stop=set(stopwords.words('english'))
 
     def strip_html(text):
         '''
@@ -122,31 +110,14 @@ def process_data():
         return df
     
     df_raw = reviewsCleaning(df_raw)
+    return df_raw
 
-    positivedata = df_raw[df_raw['sentiment'] == 1]
-    positivedata = positivedata['review']
-    negdata = df_raw[df_raw['sentiment']== 0]
-    negdata = negdata['review']
-    nltk.download('stopwords')
+def process_data():
+    df_raw = clean_data()
 
-    def wordcloud_draw(data, color, s):
-        '''
-        Creación de nube de palabras, donde se verifican palabras comunes en los dos tipos de reseñas
-        '''
-        words = ' '.join(data)
-        cleaned_word = " ".join([word for word in words.split() if(word!='movie' and word!='film')])
-        wordcloud = WordCloud(stopwords=STOPWORDS,background_color=color,width=2500,height=2000).generate(cleaned_word)
-        plt.imshow(wordcloud)
-        plt.title(s)
-        plt.axis('off')
-
-    plt.figure(figsize=[20,10])
-    plt.subplot(1,2,1)
-    wordcloud_draw(positivedata,'white','Palabras positivas más comunes')
-
-    plt.subplot(1,2,2)
-    wordcloud_draw(negdata, 'white','Palabras negativas más comunes')
-    plt.show()
+    """Se generan las stopwords en el idioma Inglés"""
+    stopword_list=nltk.corpus.stopwords.words('english')
+    stop=set(stopwords.words('english'))
 
     def get_wordnet_pos(tag):
         """

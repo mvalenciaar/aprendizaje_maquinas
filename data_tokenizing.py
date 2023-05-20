@@ -55,5 +55,10 @@ def tokenize_data():
 
     max_len = max(len(seq) for seq in x_train)
 
+    x_train = np.array(x_train)
+    y_train = np.array(y_train)
+    x_test = np.array(x_test)
+    y_test = np.array(y_test)
+
     return (x_train, y_train, x_test, y_test, embedding_matrix, max_len)
 
