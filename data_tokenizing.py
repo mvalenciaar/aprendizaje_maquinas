@@ -60,5 +60,5 @@ def tokenize_data():
 
     max_len = max(len(seq) for seq in x_train)
 
-    return (X_train, y_train, X_test, y_test, embedding_matrix, max_len)
+    return (X_train, X_test, y_train, y_test, embedding_matrix, max_len)
 
