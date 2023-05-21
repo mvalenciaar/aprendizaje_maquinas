@@ -12,28 +12,33 @@ def tokenize_data():
     imdb_df = process_data()
 
     X = imdb_df['review']
-    y = np.array(imdb_df['sentiment'])
+    y = imdb_df['sentiment']
 
     '''Se crean los conjuntos de entrenamiento y de evaluación'''
     x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     '''Se procede a realizar padding para que todas las reseñas tengan la misma longitud.
     Se definine los paramétros para el padding de las reseñas'''
-    oov_tok = "<OOV>"
-    trunc_type='post'
-    padding_type='post'
-    max_seq_length = 1000
 
-    '''Se crear un Tokenizer que servirá de diccionario para etiquetas las palabra. 
-    Tendrá longitud máxima de 5000 y usará el conjunto de entramiento como fuente'''
-    tokenizer = Tokenizer(num_words = 5000, oov_token = oov_tok)
+    '''Se crear un Tokenizer que servirá de diccionario para etiquetas las palabra que usará x_train como fuente'''
+    tokenizer = Tokenizer()
     tokenizer.fit_on_texts(x_train)
 
     '''Se convierten los texto a secuencia númerica y se aplica padding al conjunto de entrenamiento'''
     x_train = tokenizer.texts_to_sequences(x_train)
     x_test = tokenizer.texts_to_sequences(x_test)
 
-    x_train = pad_sequences(x_train, maxlen=max_seq_length, padding=padding_type, truncating=trunc_type)
+    reviews_lens = [len(text) for text in x_train]
+
+    max_seq_length = reviews_lens[np.argmax(reviews_lens)]
+
+    x_train = pad_sequences(x_train, maxlen = max_seq_length)
+    x_test = pad_sequences(x_test, maxlen = max_seq_length)
+
+    X_train = np.array(x_train).astype('int32')
+    y_train = np.array(y_train)
+    X_test = np.array(x_test).astype('int32')
+    y_test = np.array(y_test)
 
     '''Se tokenizan todas las palabras usando Word2Vec que permite representar vectorialmente palabras y similitud entre estas'''
 
@@ -55,10 +60,5 @@ def tokenize_data():
 
     max_len = max(len(seq) for seq in x_train)
 
-    x_train = np.array(x_train)
-    y_train = np.array(y_train)
-    x_test = np.array(x_test)
-    y_test = np.array(y_test)
-
-    return (x_train, y_train, x_test, y_test, embedding_matrix, max_len)
+    return (X_train, y_train, X_test, y_test, embedding_matrix, max_len)
 
