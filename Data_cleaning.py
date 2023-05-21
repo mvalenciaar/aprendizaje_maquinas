@@ -112,14 +112,7 @@ def clean_data():
     df_raw = reviewsCleaning(df_raw)
     return df_raw
 
-def process_data():
-    df_raw = clean_data()
-
-    """Se generan las stopwords en el idioma Inglés"""
-    stopword_list=nltk.corpus.stopwords.words('english')
-    stop=set(stopwords.words('english'))
-
-    def get_wordnet_pos(tag):
+def get_wordnet_pos(tag):
         """
         Mapeo del etiquetado gramatical para el proceso de lematización
         """
@@ -134,7 +127,7 @@ def process_data():
         else:
             return wordnet.NOUN
 
-    def preprocess_review(review):
+def preprocess_review(review):
         """
         Preprocesado de reseñas usando la técnica de lematización
         """
@@ -157,13 +150,7 @@ def process_data():
         
         return preprocessed_review
 
-    print ('Antes de Lematización.. \n',df_raw['review'][2])
-    df_raw['review']=df_raw['review'].apply(preprocess_review)
-    print ('Después de Lematización .. \n',df_raw['review'][2])
-
-    tokenizer=ToktokTokenizer()
-
-    def remove_stopwords(text, is_lower_case=True):
+def remove_stopwords(tokenizer, stopword_list, text, is_lower_case=True):
         '''
         Se remueven palabras comunes innecesarias (articulos, preposiciones, pronombres)
         '''
@@ -175,9 +162,23 @@ def process_data():
             filtered_tokens = [token for token in tokens if token.lower() not in stopword_list]
         filtered_text = ' '.join(filtered_tokens)    
         return filtered_text
+
+def generate_stopword_tokenizer():
+    '''Función para generar tokenizer para lemmitización y stopwords'''
+    tokenizer = ToktokTokenizer()
     
-    print ('Antes de remover stopwords.. \n',df_raw['review'][2])
-    df_raw['review']=df_raw['review'].apply(remove_stopwords)
-    print ('Después de remover stopwords .. \n',df_raw['review'][2])
+    stopword_list = nltk.corpus.stopwords.words('english')
+    return (tokenizer, stopword_list)
+    
+
+def process_data():
+    df_raw = clean_data()
+
+    """Se generan las stopwords en el idioma Inglés"""
+    (tokenizer, stopword_list) = generate_stopword_tokenizer()
+
+    df_raw['review']=df_raw['review'].apply(preprocess_review)
+
+    df_raw['review']=df_raw['review'].apply(lambda x: remove_stopwords(tokenizer, stopword_list, x))
 
     return df_raw #.to_csv('IMDB_reviews_cleaned.csv', index = False)
