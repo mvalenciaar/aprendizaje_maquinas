@@ -18,19 +18,19 @@ def tokenize_data():
     x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     '''Se procede a realizar padding para que todas las reseñas tengan la misma longitud.
-    Se definine los paramétros para el padding de las reseñas'''
+    Se definen los paramétros para el padding de las reseñas'''
+
+    trunc_type='post'
+    padding_type='post'
+    max_seq_length = 1000
 
     '''Se crear un Tokenizer que servirá de diccionario para etiquetas las palabra que usará x_train como fuente'''
-    tokenizer = Tokenizer()
+    tokenizer = Tokenizer(num_words = 5000)
     tokenizer.fit_on_texts(x_train)
 
     '''Se convierten los texto a secuencia númerica y se aplica padding al conjunto de entrenamiento'''
     x_train = tokenizer.texts_to_sequences(x_train)
     x_test = tokenizer.texts_to_sequences(x_test)
-
-    reviews_lens = [len(text) for text in x_train]
-
-    max_seq_length = reviews_lens[np.argmax(reviews_lens)]
 
     x_train = pad_sequences(x_train, maxlen = max_seq_length)
     x_test = pad_sequences(x_test, maxlen = max_seq_length)
@@ -43,7 +43,7 @@ def tokenize_data():
     '''Se tokenizan todas las palabras usando Word2Vec que permite representar vectorialmente palabras y similitud entre estas'''
 
     sentences = [review.split() for review in X]
-    model = Word2Vec(sentences, vector_size=100, window=5, min_count=5, workers=8,sg=0)
+    model = Word2Vec(sentences, vector_size=100, window=5, min_count=5, workers = 8,sg=0)
 
     '''Se genera una matriz de Word Embedding(Incrustación de palabras.'''
     vectors = []
