@@ -22,10 +22,10 @@ def tokenize_data():
 
     trunc_type='post'
     padding_type='post'
-    max_seq_length = 1000
+    max_seq_length = 500
 
     '''Se crear un Tokenizer que servirá de diccionario para etiquetas las palabra que usará x_train como fuente'''
-    tokenizer = Tokenizer(num_words = 5000)
+    tokenizer = Tokenizer(num_words = 10000)
     tokenizer.fit_on_texts(x_train)
 
     '''Se convierten los texto a secuencia númerica y se aplica padding al conjunto de entrenamiento'''
@@ -36,9 +36,9 @@ def tokenize_data():
     x_test = pad_sequences(x_test, maxlen = max_seq_length)
 
     X_train = np.array(x_train).astype('int32')
-    y_train = np.array(y_train)
+    y_train = np.array(y_train).reshape((-1,1))
     X_test = np.array(x_test).astype('int32')
-    y_test = np.array(y_test)
+    y_test = np.array(y_test).reshape((-1,1))
 
     '''Se tokenizan todas las palabras usando Word2Vec que permite representar vectorialmente palabras y similitud entre estas'''
 
