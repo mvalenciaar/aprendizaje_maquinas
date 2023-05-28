@@ -34,7 +34,6 @@ def clean_data():
     df_raw.head()
 
     """Validación de valores duplicados o nulos"""
-    duplicates = df_raw[df_raw.duplicated()]
     df_raw.isnull().sum()
     df_raw.drop_duplicates(inplace=True)
 
