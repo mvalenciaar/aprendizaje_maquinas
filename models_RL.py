@@ -8,8 +8,6 @@ from sklearn.model_selection import GridSearchCV
 import joblib
 import matplotlib.pyplot as plt
 
-#(X_train, X_test, y_train, y_test, embedding_matrix, max_len) = tokenize_data() #Esta no va
-
 def run_log_reg(X_train, X_test, y_train, y_test):
     """Build, train and evaluate the model"""
     #Train the model
