@@ -5,36 +5,57 @@ import time
 import numpy as np
 from keras.models import Sequential
 from keras.layers import Embedding, Dropout, Conv1D, GlobalMaxPooling1D, Dense, MaxPooling1D
-from keras.wrappers.scikit_learn import KerasClassifier
-from sklearn.model_selection import ParameterGrid, GridSearchCV
-from keras.callbacks import EarlyStopping
+from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
 from sklearn.metrics import f1_score
-from sklearn.metrics import  confusion_matrix, ConfusionMatrixDisplay # for model evaluation metrics
+from sklearn.metrics import  confusion_matrix, ConfusionMatrixDisplay, classification_report  # for model evaluation metrics
 
-embedding_dim = 100
+# ARCHITECTURE
+EMBED_DIM = 32
+LSTM_OUT = 64
 
-# Parámetros para GridSearch
-filters = [64, 128] #[64, 128, 256]
-rate_dropouts = [0.1, 0.25] #[0.1, 0.25, 0.5]
-batches = [32, 64] #[32, 64, 128]
-epochs = [5, 10]
+callback_list = [
+                 ModelCheckpoint(
+                     filepath = 'models/CNN.h5',
+                     monitor = 'val_accuracy',
+                     verbose = 1,
+                     save_best_only = True,
+                     save_weights_only = False,
+                     mode = 'max',
+                     period = 1
+                 ),
+                 
+                 EarlyStopping(
+                    monitor = 'val_accuracy',
+                    patience = 2,
+                    verbose = 1,
+                    mode = 'max',
+                    baseline = 0.5,
+                    restore_best_weights = True
+                 ),
 
-def run_cnn_model(X_train, X_test, y_train, y_test, embedding_matrix, max_len):
+                 ReduceLROnPlateau(
+                     monitor = 'val_loss',
+                     factor = 0.2,
+                     patience = 2,
+                     verbose = 1,
+                     mode = 'min',
+                     cooldown = 1,
+                     min_lr = 0
+                 )
+]
+
+def run_cnn_model(X_train, X_test, y_train, y_test, total_words, max_seq_length):
     '''Construye, entrena y evalúa el modelo'''
-    model_cnn = KerasClassifier(build_fn=build_cnn_model, embedding_matrix=embedding_matrix, max_len=max_len)
-    model_cnn = train_model(model_cnn, X_train, y_train)
+    model_cnn = build_cnn_model(total_words, max_seq_length)
+    model_cnn, history_cnn = train_model(model_cnn, X_train, y_train)
+    plot_loss_curves(history_cnn)
     test_model_cnn(model_cnn, X_test, y_test)
-    plot_loss_curves(model_cnn)
     plot_confusion_matrix(model_cnn, X_test, y_test)
 
-    model_cnn.save("model_cnn.h5")
-
-
-
-def build_cnn_model(embedding_matrix = 10000, max_len = 1000, filters = filters, rate = 0.25):
+def build_cnn_model(total_words = 10000, max_seq_length = 130, filters = 64, rate = 0.35):
     '''Crea la red convolucional de una dimensión con una capa de max pooling y dropout'''
     model = Sequential([
-        Embedding(len(embedding_matrix) , 100, weights = [embedding_matrix], input_length = max_len, trainable = False),
+        Embedding(total_words, EMBED_DIM, input_length = max_seq_length),
         Conv1D(filters = filters, kernel_size = 5, strides = 1, 
                      padding='valid', activation= 'relu'),
         MaxPooling1D(pool_size = 7),
@@ -44,6 +65,8 @@ def build_cnn_model(embedding_matrix = 10000, max_len = 1000, filters = filters,
         Dense(1, activation= 'sigmoid')
     ])
 
+    model.summary()
+
     # Compile the model
     model.compile(loss ='binary_crossentropy',
                   optimizer = 'adam',
@@ -51,63 +74,17 @@ def build_cnn_model(embedding_matrix = 10000, max_len = 1000, filters = filters,
 
     return model
 
-def train_model(model_cnn, X_train, y_train):
-    '''Entrena el modelo de forma exhaustiva para encontrar los mejores parámetros'''
-    '''X_train, X_val = X_train[:-5000], X_train[-5000:]
-    y_train, y_val = y_train[:-5000], y_train[-5000:]
-
-    # ----------------------------------------------
-    # Exhaustive Grid Search
-
-    param_grid = dict(epochs= epochs, batch_size= batches,
-                  filters = filters, kernel_size = kernel_size, strides = strides, 
-                  units = Dense_units, rate = rate_dropouts)
-
-    grid = ParameterGrid(param_grid)
-    param_sets = list(grid)
-
-    print(model_cnn)
-
-    param_scores = []
-    for params in grid:
-
-        print(params)
-        model_cnn.set_params(**params)
-
-        earlystopper = EarlyStopping(monitor='val_accuracy', patience= 0, verbose=1)
-
-        history = model_cnn.fit(X_train, y_train,
-                            shuffle= True,
-                            validation_data=(X_val, y_val),
-                            callbacks= [earlystopper])
-
-        param_score = history.history['val_accuracy']
-        param_scores.append(param_score[-1]) 
-
-    p = np.argmax(np.array(param_scores))
-
-    # Choose best parameters
-    best_params = param_sets[p]
-
-    model_cnn.set_params(**best_params)
-    model_cnn.fit(X_train, y_train)
-    return model_cnn'''
-
-    param_grid = dict(batch_size= batches,
-                  filters = filters,  rate = rate_dropouts, epochs=epochs)
+def train_model(model_cnn, X_train, y_train):  
+    history_cnn = model_cnn.fit(X_train,
+                    y_train,
+                    epochs = 5,
+                    batch_size = 32,
+                    verbose = 1,
+                    callbacks = callback_list,
+                    validation_split = 0.3,
+                    shuffle = True)
+    return (model_cnn, history_cnn)
     
-    clr_cnn =  GridSearchCV(estimator=model_cnn,
-                     param_grid=param_grid,
-                     scoring='accuracy',
-                     n_jobs = -1,
-                     cv = 3)
-
-    clr_cnn.fit(X_train, y_train)
-
-    print('best paramters: ', clr_cnn.best_params_)
-
-    return clr_cnn
-
 
 def test_model_cnn(model_cnn, X_test, y_test):
     '''Evalúa el modelo y devuelve la precisión y f1 score'''
@@ -122,19 +99,19 @@ def test_model_cnn(model_cnn, X_test, y_test):
     # Print the F1 score
     print("F1 score:", f1)
 
-def plot_loss_curves(history):
+def plot_loss_curves(model):
     
     '''
       Crea curvas de función de pérdida para las métricas de entrenamiento y evaluación
     '''
 
-    train_loss = history.history['loss']
-    val_loss = history.history['val_loss']
+    train_loss = model.history['loss']
+    val_loss = model.history['val_loss']
 
-    train_accuracy = history.history['accuracy']
-    val_accuracy = history.history['val_accuracy']
+    train_accuracy = model.history['accuracy']
+    val_accuracy = model.history['val_accuracy']
 
-    epochs = range(1,len(history.history['loss'])+1)
+    epochs = range(1,len(model.history['loss'])+1)
     plt.figure(figsize=(20,5))
 
     # plot loss data
@@ -158,7 +135,7 @@ def plot_loss_curves(history):
     plt.tight_layout()
     plt.legend(fontsize=15);
 
-    plt.title('Model Performance Curves')
+    plt.show()
 
 def plot_confusion_matrix(model, X_test, y_test):
   '''Grafica de matriz de confusión'''
@@ -168,4 +145,7 @@ def plot_confusion_matrix(model, X_test, y_test):
   cfm = confusion_matrix(y_test, predictions)
   cm_display = ConfusionMatrixDisplay(confusion_matrix = cfm, display_labels = ['Negative', 'Positive'])
   cm_display.plot()
+  plt.title('Matriz de confusión para modelo CNN')
   plt.show()
+
+  print(classification_report(y_test, predictions))
