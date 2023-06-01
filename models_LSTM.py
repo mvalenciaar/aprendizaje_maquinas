@@ -4,24 +4,46 @@ import numpy as np
 import tensorflow as tf
 from keras.layers import Dense
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, Bidirectional, GRU, Dense, LSTM
+from tensorflow.keras.layers import Embedding, Bidirectional, GRU, Dense, LSTM,  Dropout
 from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.metrics import f1_score
-from keras.wrappers.scikit_learn import KerasClassifier
-from tensorflow.keras.callbacks import ModelCheckpoint   # save model
+from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau # save model
 from sklearn.metrics import  confusion_matrix, ConfusionMatrixDisplay, classification_report # for model evaluation metrics
 
 # ARCHITECTURE
 EMBED_DIM = 32
 LSTM_OUT = 64
 
-'''Función para guardar el modelo localmente si hay mejora'''
-checkpoint = ModelCheckpoint(
-    'models/LSTM.h5',
-    monitor='val_accuracy',
-    save_best_only=True,
-    verbose=1
-)
+callback_list = [
+                 ModelCheckpoint(
+                     filepath = 'models/LSTM.h5',
+                     monitor = 'val_accuracy',
+                     verbose = 1,
+                     save_best_only = True,
+                     save_weights_only = False,
+                     mode = 'max',
+                     period = 1
+                 ),
+                 
+                 EarlyStopping(
+                    monitor = 'val_accuracy',
+                    patience = 2,
+                    verbose = 1,
+                    mode = 'max',
+                    baseline = 0.5,
+                    restore_best_weights = True
+                 ),
+
+                 ReduceLROnPlateau(
+                     monitor = 'val_loss',
+                     factor = 0.2,
+                     patience = 2,
+                     verbose = 1,
+                     mode = 'min',
+                     cooldown = 1,
+                     min_lr = 0
+                 )
+]
 
 def run_lstm_model(X_train, X_test, y_train, y_test, total_words, max_seq_length):
   '''Construye, entrena y evalúa el modelo'''
@@ -36,11 +58,14 @@ def build_lstm_model(total_words, max_seq_length):
     '''Crea modelo LSTM simple'''
     model_lstm = Sequential ([
             Embedding(total_words, EMBED_DIM, input_length = max_seq_length),
-            LSTM(LSTM_OUT, dropout = 0.2, recurrent_dropout = 0.2),
-            Dense(1, activation = 'sigmoid')
+            Dropout(0.2),
+            LSTM(LSTM_OUT),
+            Dense(units=256, activation='relu'),
+            Dropout(0.2),
+            Dense(units=1, activation='sigmoid')
         ])
 
-    # Set the training parameters
+    model_lstm.summary()
 
     # Compile the model
     model_lstm.compile(loss ='binary_crossentropy',
@@ -52,7 +77,13 @@ def build_lstm_model(total_words, max_seq_length):
 # Train the model
 def train_model(model_lstm, X_train, y_train):
   '''Entrena el modelo de forma exhaustiva para encontrar los mejores parámetros'''
-  history_lstm = model_lstm.fit(X_train, y_train, epochs = 10, validation_split = 0.2, callbacks=[checkpoint])
+  history_lstm = model_lstm.fit(X_train, y_train,
+                    epochs = 7,
+                    batch_size = 32,
+                    verbose = 1,
+                    callbacks = callback_list,
+                    validation_split = 0.3,
+                    shuffle = True)
   return (model_lstm, history_lstm)
 
 def test_model(model_lstm, X_test, y_test):

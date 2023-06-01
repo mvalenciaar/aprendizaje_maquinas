@@ -26,7 +26,7 @@ callback_list = [
                  
                  EarlyStopping(
                     monitor = 'val_accuracy',
-                    patience = 20,
+                    patience = 2,
                     verbose = 1,
                     mode = 'max',
                     baseline = 0.5,
@@ -36,7 +36,7 @@ callback_list = [
                  ReduceLROnPlateau(
                      monitor = 'val_loss',
                      factor = 0.2,
-                     patience = 5,
+                     patience = 2,
                      verbose = 1,
                      mode = 'min',
                      cooldown = 1,
@@ -52,7 +52,7 @@ def run_cnn_model(X_train, X_test, y_train, y_test, total_words, max_seq_length)
     test_model_cnn(model_cnn, X_test, y_test)
     plot_confusion_matrix(model_cnn, X_test, y_test)
 
-def build_cnn_model(total_words = 10000, max_seq_length = 130, filters = 64, rate = 0.25):
+def build_cnn_model(total_words = 10000, max_seq_length = 130, filters = 64, rate = 0.35):
     '''Crea la red convolucional de una dimensión con una capa de max pooling y dropout'''
     model = Sequential([
         Embedding(total_words, EMBED_DIM, input_length = max_seq_length),
@@ -64,6 +64,8 @@ def build_cnn_model(total_words = 10000, max_seq_length = 130, filters = 64, rat
         Dropout(rate),
         Dense(1, activation= 'sigmoid')
     ])
+
+    model.summary()
 
     # Compile the model
     model.compile(loss ='binary_crossentropy',
@@ -79,7 +81,7 @@ def train_model(model_cnn, X_train, y_train):
                     batch_size = 32,
                     verbose = 1,
                     callbacks = callback_list,
-                    validation_split = 0.2,
+                    validation_split = 0.3,
                     shuffle = True)
     return (model_cnn, history_cnn)
     
