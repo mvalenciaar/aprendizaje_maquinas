@@ -27,15 +27,16 @@ def clean_data():
 
     """Lectura del dataset"""
     df_raw = pd.read_csv('./IMDB Dataset.csv')
-    df_raw.head()
-
-    """Marcación de 1 "uno" para reseñas positivas y 0 "cero" para negativas"""
-    df_raw['sentiment'].replace(['positive', 'negative'], [1, 0], inplace = True)
-    df_raw.head()
 
     """Validación de valores duplicados o nulos"""
     df_raw.isnull().sum()
     df_raw.drop_duplicates(inplace=True)
+    print('================================Dataframe después de eliminar valores duplicados================================')
+    print(df_raw['sentiment'].value_counts())
+
+    """Marcación de 1 "uno" para reseñas positivas y 0 "cero" para negativas"""
+    df_raw['sentiment'].replace(['positive', 'negative'], [1, 0], inplace = True)
+    print(df_raw.head())
 
     def strip_html(text):
         '''
@@ -170,8 +171,7 @@ def generate_stopword_tokenizer():
     return (tokenizer, stopword_list)
     
 
-def process_data():
-    df_raw = clean_data()
+def process_data(df_raw):
 
     """Se generan las stopwords en el idioma Inglés"""
     (tokenizer, stopword_list) = generate_stopword_tokenizer()

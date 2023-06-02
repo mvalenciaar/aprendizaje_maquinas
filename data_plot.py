@@ -5,12 +5,9 @@ from nltk.corpus import stopwords, wordnet
 import matplotlib.pyplot as plt
 from data_cleaning import clean_data
 
-def plot_data_analysis():
+def plot_data_analysis(df_raw):
     '''Gráficas de desbalanceo y nube de palabras'''
-    df_raw = clean_data()
-
-    """Gráfica de distribución para evaluar si existe desbalanceo de datos"""
-    print(sns.countplot(x=df_raw['sentiment']))
+    print('======================== NUBE DE PALABRAS =================================')
 
     positivedata = df_raw[df_raw['sentiment'] == 1]
     positivedata = positivedata['review']

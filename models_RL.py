@@ -1,15 +1,14 @@
 #Importar librerias necesarias
-from data_tokenizing import tokenize_data
 import numpy as np
 import seaborn as sns
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, confusion_matrix, roc_curve, auc, f1_score
+from sklearn.metrics import accuracy_score, confusion_matrix, roc_curve, auc, f1_score, ConfusionMatrixDisplay, classification_report
 from sklearn.model_selection import GridSearchCV
 import joblib
 import matplotlib.pyplot as plt
 
-def run_log_reg(X_train, X_test, y_train, y_test):
-    """Build, train and evaluate the model"""
+def run_lr_model(X_train, X_test, y_train, y_test):
+    '''Construye, entrena y evalúa el modelo'''
     #Train the model
     model_log_reg = log_reg(X_train, y_train)
     #Evaluate the model
@@ -18,23 +17,24 @@ def run_log_reg(X_train, X_test, y_train, y_test):
     print(f'Train accuracy score: {acc_score_train}')
     print(f'Test accuracy score: {acc_score_test}')
     #Execute plots
+    plot_confusion_matrix(y_test, pred_test)
     auc_score = plots(y_test, pred_test)
     print(f'AUC: {auc_score}')
 
 
-def log_reg(X_train, y_train, save_model=True, model_path = 'logreg_model.pkl'):
-    """This function create and train the model, the hyperparameters where optimized before"""
+def log_reg(X_train, y_train, save_model=True, model_path = 'models/logreg_model.pkl'):
+    '''Esta función crea y entrena el modelo con hiperparámetros definidos'''
     log_reg = LogisticRegression(C=10.0, penalty='l2', max_iter=500)
     #Train the model
     log_reg.fit(X_train, y_train)
     #Save the model
     if save_model:
-        joblib.dump(log_reg, model_path)
+            joblib.dump(log_reg, model_path)
 
     return log_reg
 
-def test_log_reg(X_train, X_test, y_train, y_test, model_path = 'logreg_model.pkl'):
-    """This function evaluate the model"""
+def test_log_reg(X_train, X_test, y_train, y_test, model_path = 'models/logreg_model.pkl'):
+    '''Esta función evalúa el modelo'''
     #Load the model
     log_reg = joblib.load(model_path)
     #Predictions of the data train and test
@@ -47,16 +47,15 @@ def test_log_reg(X_train, X_test, y_train, y_test, model_path = 'logreg_model.pk
 
     return pred_test, acc_score_train, acc_score_test, f1
 
-def plots(y_test, pred_test):
-    #Confusion Matrix
+def plot_confusion_matrix(y_test, pred_test):
+      #Confusion Matrix
     cm = confusion_matrix(y_test, pred_test)
-    plt.figure(figsize=(8, 6))
-    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
-    plt.title('Matriz de Confusión')
-    plt.xlabel('Predicted')
-    plt.ylabel('True')
+    cm_display = ConfusionMatrixDisplay(confusion_matrix = cm, display_labels = ['Negative', 'Positive'])
+    cm_display.plot()
+    plt.title('Matriz de confusión para modelo Regresión Logística')
     plt.show()
 
+def plots(y_test, pred_test):
     #Curve ROC and AUC calc
     #Calculate ROC curve
     fpr, tpr, thresholds = roc_curve(y_test, pred_test)

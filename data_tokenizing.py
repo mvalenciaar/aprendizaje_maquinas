@@ -5,11 +5,8 @@ from sklearn.model_selection import train_test_split
 import tensorflow as tf
 from keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-from gensim.models import Word2Vec
-from data_cleaning import process_data
 
-def tokenize_data():
-    imdb_df = process_data()
+def tokenize_data(imdb_df):
 
     X = imdb_df['review']
     y = imdb_df['sentiment']
@@ -26,7 +23,7 @@ def tokenize_data():
         return int(np.ceil(np.mean(review_length)))
 
     '''Se crear un Tokenizer que servirá de diccionario para etiquetas las palabra que usará x_train como fuente'''
-    token = Tokenizer(lower=False) 
+    token = Tokenizer(lower=False,  oov_token='OOV') 
     token.fit_on_texts(x_train)
    
 
