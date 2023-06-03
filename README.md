@@ -50,9 +50,7 @@ Para el procedimiento de exploración y limpieza del dataset, se realizaron las 
 
 Posteriormente, se obtienen 24.884 reseñas positivas (1), y 24.698 negativas (0).
 
-
-
-
+![word_cloud](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/56141354/6c83a9c2-fbbc-466e-91db-400b6d27a6e8)
 
 
 Figura 1. Nube de palabras
@@ -64,6 +62,7 @@ La librería utilizada de Python para el proceso de remoción de Stopwords es NL
 A continuación, se muestra para nuestro dataset de trabajo como se genera esta transformación de lematización:
 
 
+![Screen Shot 2023-06-02 at 9 34 37 PM](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/56141354/0db2cb42-abc1-47a5-9e96-5a1dcdc37daa)
 
 
 Figura 2. Proceso de Lematización
@@ -75,6 +74,9 @@ Esta técnica elimina palabras que no contienen significado alguno, por ejemplo:
 La librería utilizada de Python para el proceso de remoción de Stopwords es `NLTK`.
 
 
+![remove_stop_words](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/56141354/918da066-d211-4221-8caf-c71166cb488a)
+
+
 Figura 3. Remoción de Stopwords
 
 
@@ -83,6 +85,8 @@ Figura 3. Remoción de Stopwords
 La tokenización permite separar las oraciones en palabras, y a cada una de ellas se le asigna un valor numérico único, para permitir que los modelos tengan entradas numéricas.
 Este se utiliza con la librería de Python `Keras`, y la función de esta librería `Tokenizer`, y recibe como fuente de datos el conjunto de entrenamiento.
 
+
+<img width="635" alt="Tokenization" src="https://github.com/mvalenciaar/aprendizaje_maquinas/assets/56141354/0419b6d8-8669-4b31-bdff-80bf2991ec20">
 
 
 Figura 4. Tokenización
