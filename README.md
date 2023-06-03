@@ -50,6 +50,13 @@ Para el procedimiento de exploración y limpieza del dataset, se realizaron las 
 
 Posteriormente, se obtienen 24.884 reseñas positivas (1), y 24.698 negativas (0).
 
+
+
+
+
+
+Figura 1. Nube de palabras
+
 #### **Lematización**
 Este proceso es una técnica del procesamiento de lenguaje natural (NLP) que tiene como objetivo, reducir palabras a su forma base o raíz; ejemplo: convertir plurales en singulares, verbos conjugados a infinitivos, entre otros.
 La librería utilizada de Python para el proceso de remoción de Stopwords es NLTK.
@@ -59,7 +66,7 @@ A continuación, se muestra para nuestro dataset de trabajo como se genera esta 
 
 
 
-Figura 1. Proceso de Lematización
+Figura 2. Proceso de Lematización
 
 
 ### **Remoción de Stopwords**
@@ -68,7 +75,7 @@ Esta técnica elimina palabras que no contienen significado alguno, por ejemplo:
 La librería utilizada de Python para el proceso de remoción de Stopwords es `NLTK`.
 
 
-Figura 2. Remoción de Stopwords
+Figura 3. Remoción de Stopwords
 
 
 ### **Tokenización**
@@ -78,7 +85,7 @@ Este se utiliza con la librería de Python `Keras`, y la función de esta librer
 
 
 
-Figura 3. Tokenización
+Figura 4. Tokenización
 
 
 Posteriormente, se tokeniza el conjunto de entrenamiento y validación, en donde se añade un `padding` para que todas las reseñas tengan la misma longitud al momento del procesamiento en el modelo analítico.
