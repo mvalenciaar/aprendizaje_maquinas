@@ -40,5 +40,49 @@ Dentro de la dinámica de trabajo propuesto, se plantea una metodología así:
 
 #### **Exploración y Limpieza del Dataset**
 
+Para el procedimiento de exploración y limpieza del dataset, se realizaron las siguientes operaciones con la finalidad de obtener información de calidad que permitiera un mejor entrenamiento y predicción de los modelos analíticos planteados para el análisis de sentimientos de reseñas de películas.
+* Conversión de respuesta de texto a binario.
+* Eliminación de reseñas duplicadas.
+* Evaluación de desbalanceo de datos.
+* Eliminación de etiquetas HTML.
+* Eliminación de caracteres especiales (URL, e-mail, corchetes, números)
+* Convertir texto a minúscula.
+
+Posteriormente, se obtienen 24.884 reseñas positivas (1), y 24.698 negativas (0).
+
+#### **Lematización**
+Este proceso es una técnica del procesamiento de lenguaje natural (NLP) que tiene como objetivo, reducir palabras a su forma base o raíz; ejemplo: convertir plurales en singulares, verbos conjugados a infinitivos, entre otros.
+La librería utilizada de Python para el proceso de remoción de Stopwords es NLTK.
+
+A continuación, se muestra para nuestro dataset de trabajo como se genera esta transformación de lematización:
+
+
+
+
+Figura 1. Proceso de Lematización
+
+
+### **Remoción de Stopwords**
+
+Esta técnica elimina palabras que no contienen significado alguno, por ejemplo: preposiciones, pronombres, conectores, entre otros.
+La librería utilizada de Python para el proceso de remoción de Stopwords es `NLTK`.
+
+
+Figura 2. Remoción de Stopwords
+
+
+### **Tokenización**
+
+La tokenización permite separar las oraciones en palabras, y a cada una de ellas se le asigna un valor numérico único, para permitir que los modelos tengan entradas numéricas.
+Este se utiliza con la librería de Python `Keras`, y la función de esta librería `Tokenizer`, y recibe como fuente de datos el conjunto de entrenamiento.
+
+
+
+Figura 3. Tokenización
+
+
+Posteriormente, se tokeniza el conjunto de entrenamiento y validación, en donde se añade un `padding` para que todas las reseñas tengan la misma longitud al momento del procesamiento en el modelo analítico.
+
+
 
 ### **Análisis y conclusiones:**
