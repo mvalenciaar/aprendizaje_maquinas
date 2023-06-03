@@ -1,6 +1,6 @@
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, roc_curve, auc
+from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, roc_curve, auc, ConfusionMatrixDisplay, classification_report
 import joblib
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -15,6 +15,7 @@ def run_tree(X_train, X_test, y_train, y_test):
     print(f'Train accuracy score: {acc_score_train}')
     print(f'Test accuracy score: {acc_score_test}')
     #Execute plots
+    plot_confusion_matrix(y_test, pred_test)
     auc_score = plots(y_test, pred_test)
     print(f'AUC: {auc_score}')
 
@@ -58,16 +59,15 @@ def test_tree(X_train, X_test, y_train, y_test, model_path = 'dec_tree.pkl'):
 
     return pred_test, acc_score_train, acc_score_test, f1
 
-def plots(y_test, pred_test):
-    #Confusion matrix
+def plot_confusion_matrix(y_test, pred_test):
+    """Confusion matrix"""
     cm = confusion_matrix(y_test, pred_test)
-    plt.figure(figsize=(8, 6))
-    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
-    plt.title('Matriz de Confusión')
-    plt.xlabel('Predicted')
-    plt.ylabel('True')
+    cm_display = ConfusionMatrixDisplay(confusion_matrix = cm, display_labels = ['Negative', 'Positive'])
+    cm_display.plot()
+    plt.title('Matriz de confusión para modelo Regresión Logística')
     plt.show()
 
+def plots(y_test, pred_test):
     #Curve ROC and AUC calculation
     fpr, tpr, thresholds = roc_curve(y_test, pred_test)
 
