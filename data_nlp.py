@@ -1,4 +1,4 @@
-from data_cleaning import clean_data, preprocess_review, remove_stopwords, generate_stopword_tokenizer
+from Data_cleaning import preprocess_review, remove_stopwords, generate_stopword_tokenizer
 def show_nlp_results(imdb_df):
     '''Función para mostrar el proceso hecho en el data_cleaning'''
    

@@ -29,8 +29,16 @@ La estructura de los datos, consta de dos columnas:
 
 ### **Metodología:**
 
-
+Dentro de la dinámica de trabajo propuesto, se plantea una metodología así:
+- Realizar exploración y limpieza de los datos asociados al análisis de sentimientos de reseñas de películas.
+- Tokenizar las palabras de cada reseña, con el fin de que los modelos analíticos reciban entradas numéricas.
+- Posterior a esta limpieza, se plantean 4 modelos  analíticos para el entrenamiento y predicción del sentimiento de las reseñas del dataset.
+- Resultados de los 4 modelos analíticos y la selección del mejor accuracy obtenido entre ellos.
+- Finalmente, concluir sobre los resultados obtenidos.
 
 ### **Presentación de resultados y uso de métricas:**
+
+#### **Exploración y Limpieza del Dataset**
+
 
 ### **Análisis y conclusiones:**

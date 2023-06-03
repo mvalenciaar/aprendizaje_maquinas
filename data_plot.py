@@ -3,7 +3,7 @@ from wordcloud import WordCloud, STOPWORDS
 import nltk
 from nltk.corpus import stopwords, wordnet
 import matplotlib.pyplot as plt
-from data_cleaning import clean_data
+from Data_cleaning import clean_data
 
 def plot_data_analysis(df_raw):
     '''Gráficas de desbalanceo y nube de palabras'''
