@@ -105,9 +105,15 @@ La regresión logistica es un tipo de analisis de regresión que busca predecir 
 Para el modelo de regresión logistica se realizó un grid search con el objetivo de optimizar los hiperparametros del modelo, donde se encontró que los mejores hiperparametros fueron: (C=10.0, penalty='l2', max_iter=500). Sin embargo, el desempeño del modelo no fue el más optimo puesto que presento una precisión o accuracy del 0.535 y 0.512 para los datos de entrenamiento y test, respectivamente. Además el modelo presento un valor del 0.562 para el F1 score. A continuación se presenta la matriz de confusión para el modelo, ver Figura 5.
 
 
+![lr_cfm](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/103476375/032dd4fa-5448-4fcf-8581-4f81017ea4da)
+
+
 Figura 5. Matriz de confusión regresión logistica.
 
 La curva ROC es una presentación grafica de la sensibilidad frente a la especificidad para un sistema de clasificación. Donde entre más cercana se encuentre la curva a la esquina superior izquierda, significa un mejor desempeño del modelo, caso contrario es equivalente a una clasificación 'aleatoria'. Como se observa en la Figura 6, el modelo se acerca a una clasificación aleatoria y no a una buena clasificación.
+
+
+![curva_ROC_logistic_rehresion](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/103476375/2dbc6f9f-d535-4fee-955c-f60aff64e948)
 
 
 Figura 6. Curva ROC regresión logistica.
@@ -121,7 +127,13 @@ Un arbol de decisión es un modelo de aprendizaje supervisado, que puede ser uti
 Para realizar el entrenamiento del arbol de decisión se realizó un grid search buscando optimizar los hiperparametros para un mejor desempeño del modelo. Sin embargo, luego de evaluar el modelo no es un modelo muy optimo y presenta un desempeño bajo con los siguientes valores: precisión o accuracy de 0.543 y 0.523 para los datos de entrenamiento y test, respectivamente, adicionalmente el valor F1 score fue de 0.486. A continuación se presenta la matriz de confusión, ver Figura 7, y la curva ROC, ver Figura 8, la cual nuevamente se aleja de la esquina superior izquiera (optimo) y se acerca a una clasificación 'aleatoria'.
 
 
+![matriz_confusion_decision_tree](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/103476375/b494c0b6-0e18-4e28-9181-d36b44b174ee)
+
+
 Figura 7. Matriz de confusión arbol de decisiones.
+
+
+![curva_ROC_decision_tree](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/103476375/eb349290-3c0e-4989-a5f8-7491315de0b2)
 
 
 Figura 8. Curva ROC arbol de decisión.
