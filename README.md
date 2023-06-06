@@ -97,7 +97,23 @@ Posteriormente, se tokeniza el conjunto de entrenamiento y validación, en donde
 
 
 ### **Análisis y conclusiones:**
+### **Modelos de Aprendizaje Profundo**
 
+#### **Red Neuronal Convolucional**
+
+
+
+#### **Red Neuronal long short term memmory (LSTM)**
+
+La Red Neuronal LSTM es un tipo de red neuronal recurrente, las cuales son muy útiles para modelar información secuencial como series de tiempo y lenguaje natural debido a que permite iterar sobre los pasos temporales de los datos secuenciales, manteniendo también un estado interno de lo aprendido durante el proceso.
+
+La Red Neuronal LSTM ofrece la capacidad de guardar información que puede ser relevante para el contexto de la serie temporal y también determinar la información que puede ser despreciable.
+
+Para el modelo LSTM se creó un modelo simple que recibe la información tokenizada a través de una capa Embedding, para seguir con una capa recurrente (LSTM) de 64 perceptrones. Se tienen también dos capas Dropout que ayudarán a disminuir el sobrentrenamiento del modelo. El Modelo fue entrenado durante 7 épocas (aunque solo realizó 5 debido al early stopping) A continuación se presentan los resultados del entrenamiento y la matriz de confusión.
+
+
+
+### **Modelos tradicionales de Aprendizaje de Máquinas**
 #### **Modelo regresión logistica**
 
 La regresión logistica es un tipo de analisis de regresión que busca predecir el resultado de una variable categorica (0 y 1) en función de las variables independientes o predictorias (reseñas).

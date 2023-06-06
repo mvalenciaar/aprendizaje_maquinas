@@ -77,8 +77,8 @@ def build_cnn_model(total_words = 10000, max_seq_length = 130, filters = 64, rat
 def train_model(model_cnn, X_train, y_train):  
     history_cnn = model_cnn.fit(X_train,
                     y_train,
-                    epochs = 5,
-                    batch_size = 32,
+                    epochs = 10,
+                    batch_size = 64,
                     verbose = 1,
                     callbacks = callback_list,
                     validation_split = 0.3,

@@ -78,11 +78,11 @@ def build_lstm_model(total_words, max_seq_length):
 def train_model(model_lstm, X_train, y_train):
   '''Entrena el modelo de forma exhaustiva para encontrar los mejores parámetros'''
   history_lstm = model_lstm.fit(X_train, y_train,
-                    epochs = 7,
-                    batch_size = 32,
+                    epochs = 10,
+                    batch_size = 64,
                     verbose = 1,
                     callbacks = callback_list,
-                    validation_split = 0.3,
+                    validation_split = 0.2,
                     shuffle = True)
   return (model_lstm, history_lstm)
 
