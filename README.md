@@ -101,7 +101,12 @@ Posteriormente, se tokeniza el conjunto de entrenamiento y validación, en donde
 
 #### **Red Neuronal Convolucional**
 
+![CNN_training_curves](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/966ba58a-ae0e-4bc3-a2de-6773786cf2a1)
 
+Figura X. Curva de función de pérdida para modelo LSTM
+
+![CNN_cfm](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/3c71b808-5a39-495e-9ba8-3efb19e7fdfa)
+Figura X. Curva de función de pérdida para modelo LSTM
 
 #### **Red Neuronal long short term memmory (LSTM)**
 
@@ -109,12 +114,23 @@ La Red Neuronal LSTM es un tipo de red neuronal recurrente, las cuales son muy �
 
 La Red Neuronal LSTM ofrece la capacidad de guardar información que puede ser relevante para el contexto de la serie temporal y también determinar la información que puede ser despreciable.
 
-Para el modelo LSTM se creó un modelo simple que recibe la información tokenizada a través de una capa Embedding, para seguir con una capa recurrente (LSTM) de 64 perceptrones. Se tienen también dos capas Dropout que ayudarán a disminuir el sobrentrenamiento del modelo. El Modelo fue entrenado durante 7 épocas (aunque solo realizó 5 debido al early stopping) A continuación se presentan los resultados del entrenamiento y la matriz de confusión.
+Para el modelo LSTM se creó un modelo simple que recibe la información tokenizada a través de una capa Embedding, para seguir con una capa recurrente (LSTM) de 64 perceptrones. Se tienen también dos capas Dropout que ayudarán a disminuir el sobrentrenamiento del modelo. El Modelo fue entrenado durante 7 épocas (aunque solo realizó 5 debido al early stopping). En el conjunto de evaluación se obtuvo una precisión o accuracy de 0.8635 y un F1-score de 0.8585, relativamente bajos comparados con el 0.9999 de precisión obtenido en la fase de entrenamiento.
 
-![lstm_training_curves_1](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/3a4dccd3-055f-49cd-ac76-40acafed5888)
+A continuación se presentan los resultados del entrenamiento y la matriz de confusión:
 
-![lstm_training_curves_2](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/fee72ce1-9a11-4b1b-b43e-6d15f98de00d)
+![lstm_loss_function](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/85eb54de-fa76-45dd-bf7f-65e7a613a66f)
 
+Figura X. Curva de función de pérdida para modelo LSTM
+
+![lstm_precision_curve](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/ba41e04c-5ec6-4cea-8692-b7185f4256de)
+
+Figura X. Curva de precisión para modelo LSTM
+
+![lstm_cfm](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/a231299b-7576-4933-a6a4-7dab12171ca6)
+
+Figura X. Matriz de confusión LSTM
+
+De estas gráficas se puede ver que el modelo tiene buen rendimiento para entender la secuencialidad presentada en las reseñas de películas pero presenta un sobrentrenamiento notorio. Esto puede ser debido a que el modelo parece aprender los patrones de secuencialidad presentados por la tokenización en sólo dos épocas. Es posible que la información para el modelo sea fácil de procesar y entender gracias a la capa de Embedding añadida.
 
 ### **Modelos tradicionales de Aprendizaje de Máquinas**
 #### **Modelo regresión logistica**
