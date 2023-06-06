@@ -111,6 +111,9 @@ La Red Neuronal LSTM ofrece la capacidad de guardar información que puede ser r
 
 Para el modelo LSTM se creó un modelo simple que recibe la información tokenizada a través de una capa Embedding, para seguir con una capa recurrente (LSTM) de 64 perceptrones. Se tienen también dos capas Dropout que ayudarán a disminuir el sobrentrenamiento del modelo. El Modelo fue entrenado durante 7 épocas (aunque solo realizó 5 debido al early stopping) A continuación se presentan los resultados del entrenamiento y la matriz de confusión.
 
+![lstm_training_curves_1](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/3a4dccd3-055f-49cd-ac76-40acafed5888)
+
+![lstm_training_curves_2](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/fee72ce1-9a11-4b1b-b43e-6d15f98de00d)
 
 
 ### **Modelos tradicionales de Aprendizaje de Máquinas**
