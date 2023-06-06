@@ -27,7 +27,7 @@ callback_list = [
                  
                  EarlyStopping(
                     monitor = 'val_accuracy',
-                    patience = 2,
+                    patience = 5,
                     verbose = 1,
                     mode = 'max',
                     baseline = 0.5,
@@ -147,7 +147,7 @@ def plot_confusion_matrix(model, X_test, y_test):
   cfm = confusion_matrix(y_test, predictions)
   cm_display = ConfusionMatrixDisplay(confusion_matrix = cfm, display_labels = ['Negative', 'Positive'])
   cm_display.plot()
-  plt.title('Confusion Matrix for LSTM')
+  plt.title('Matriz de Confusión para modelo LSTM')
   plt.show()
 
   print(classification_report(y_test, predictions))

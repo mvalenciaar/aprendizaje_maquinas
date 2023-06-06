@@ -26,7 +26,7 @@ callback_list = [
                  
                  EarlyStopping(
                     monitor = 'val_accuracy',
-                    patience = 2,
+                    patience = 5,
                     verbose = 1,
                     mode = 'max',
                     baseline = 0.5,
