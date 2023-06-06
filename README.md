@@ -95,18 +95,26 @@ Figura 4. Tokenización
 Posteriormente, se tokeniza el conjunto de entrenamiento y validación, en donde se añade un `padding` para que todas las reseñas tengan la misma longitud al momento del procesamiento en el modelo analítico.
 
 
-
 ### **Análisis y conclusiones:**
 ### **Modelos de Aprendizaje Profundo**
 
+Se considera pertinente aclarar que para ambos modelos presentados se va a incluir una capa llamada Embedding. Esta capa va a ayudar a crear una representación vectorial y semántica de las entradas del modelo (en este caso las reseñas tokenizadas) permitiendo también crear representaciones vectoriales similares de palabras con contexto semántico similar (Hombre y mujer, rey y reina). Esto es esencial para ambos modelos debido a que va a ser el insumo para los filtros de la capa convolucional de la red neuronal convolucional y para la red neuronal recurrente permitirá crear una representación vecotrial de la secuencialidad intrínseca dentro de las reseñas de películas. Más información sobre el proceso puede ser encontrada en el siguiente enlace https://machinelearningmastery.com/what-are-word-embeddings/
+
 #### **Red Neuronal Convolucional**
+
+Las Redes Neuronales Convolucionales son ampliamente usadas en el campo de detección de objetos y clasificación de imágenes, pero también pueden tener aplicaciones en el campo del procesamiento de lenguaje natural, bajo ciertas condiciones. La principal diferencia es el uso de una capa Convolucional con filtros de una dimensión, lo cuál sigue los mismos lineamientos de los filtros de una red convolucional pero con filtros en forma de vector unidimensional en vez de una matriz, y el resultado de este proceso será un espacio vectorial con las características más relevantes de la entrada ingresada en este caso rasgos semánticos relevantes detectados. Para el modelo propuesto se inicia como se mencionó anteriormente con una capa Embedding, seguido de una capa Convolucional unidimensional con un max pooling para la detección de atributos más relevantes. Se termina con una capa neuronal clásica con el resultado de la convolución y una función de activación sigmoide para devolver un resultado binario.
+
+El modelo fue entrenado durante 10 épocas pero paró en la séptima al no detectar mejoras en la precisión dentro del conjunto de validación, obteniendo así una precisión en entrenamiento del 100%. Para el conjunto de evaluación, se obtuvo una precisión o accuracy de 0.8580 y un F1-score de 0.8605. A continuación se muestran los resultados gráficos obtenidos durante el entrenamiento y la matriz de confusión:
 
 ![CNN_training_curves](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/966ba58a-ae0e-4bc3-a2de-6773786cf2a1)
 
-Figura X. Curva de función de pérdida para modelo LSTM
+Figura X. Curva de función de pérdida para modelo CNN
 
 ![CNN_cfm](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/3c71b808-5a39-495e-9ba8-3efb19e7fdfa)
-Figura X. Curva de función de pérdida para modelo LSTM
+
+Figura X. Curva de función de pérdida para modelo CNN
+
+De estas gráficas se puede ver que el modelo tiene buen rendimiento para entender la secuencialidad presentada en las reseñas de películas pero presenta un sobrentrenamiento notorio. Esto puede ser debido a que el modelo parece aprender los patrones de secuencialidad presentados por la tokenización en sólo dos épocas. Es posible que la información para el modelo sea fácil de procesar y entender gracias a la capa de Embedding añadida.
 
 #### **Red Neuronal long short term memmory (LSTM)**
 
@@ -130,7 +138,7 @@ Figura X. Curva de precisión para modelo LSTM
 
 Figura X. Matriz de confusión LSTM
 
-De estas gráficas se puede ver que el modelo tiene buen rendimiento para entender la secuencialidad presentada en las reseñas de películas pero presenta un sobrentrenamiento notorio. Esto puede ser debido a que el modelo parece aprender los patrones de secuencialidad presentados por la tokenización en sólo dos épocas. Es posible que la información para el modelo sea fácil de procesar y entender gracias a la capa de Embedding añadida.
+Al igual que con el modelo convolucional se nota un sobrentrenamiento notorio que puede deberse a un rápido aprendizaje de patrones en las reseñas de películas. Se nota una leve mejoría con respecto al modelo CNN.
 
 ### **Modelos tradicionales de Aprendizaje de Máquinas**
 #### **Modelo regresión logistica**
