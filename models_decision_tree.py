@@ -6,53 +6,53 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def run_tree(X_train, X_test, y_train, y_test):
-    """Build train and evaluate the model"""
-    #Train the model
+    """Función para crear, entrenar y evaluar el modelo"""
+    #Crear y Entrenar el modelo
     tree_clf = dec_tree(X_train, y_train)
-    #Evaluate the model
+    #Evaluar el modelo
     pred_test, acc_score_train, acc_score_test, f1 = test_tree(X_train, X_test, y_train, y_test)
     print(f'F1 Score: {f1}')
-    print(f'Train accuracy score: {acc_score_train}')
-    print(f'Test accuracy score: {acc_score_test}')
-    #Execute plots
+    print(f'Precisión en entrenamiento: {acc_score_train}')
+    print(f'Precisión en evaluacuón: {acc_score_test}')
+    #Mostrar resultados gráficos
     plot_confusion_matrix(y_test, pred_test)
     auc_score = plots(y_test, pred_test)
     print(f'AUC: {auc_score}')
 
 def dec_tree(X_train, y_train, save_model=True, model_path = 'models/dec_tree.pkl'):
-    """This function create and train the model of decision tree"""
-    #Hyperparameters to optimize
+    """Esta función crea y entrena el modelo de árboles de decisión"""
+    #Hiperparámetros para optimizar
     param_grid = {
         'criterion' : ['gini', 'entropy'],
         'max_depth' : [None, 5, 10],
         'min_samples_split' : [2, 5, 10],
         'min_samples_leaf' : [1, 2, 3]
     }
-    #Create the model and optimize hyperparameters
+    #Búsqueda exhaustiva de parámetros óptimos con GridSearchCV
     clf = DecisionTreeClassifier()
     grid_search = GridSearchCV(clf, param_grid, cv=5)
     grid_search.fit(X_train, y_train)
-    #Best params and tree
+    #Eleccuón de mejores parámetros
     best_params = grid_search.best_params_
     best_tree = DecisionTreeClassifier(**best_params)
 
-    #Train the final model
+    #Entrenar el modelo
     best_tree.fit(X_train, y_train)
 
-    #Save the model
+    #Guardar el modelo
     if save_model:
         joblib.dump(best_tree, model_path)
 
     return best_tree
 
 def test_tree(X_train, X_test, y_train, y_test, model_path = 'models/dec_tree.pkl'):
-    """Function to evaluate the model"""
-    #Load the model
+    """Función para evaluar el modelo entrenado"""
+    #Cargar el modelo
     tree_clf = joblib.load(model_path)
-    #Predictions of the data train and test
+    #Predecir en el conjunto de datos
     pred_train = tree_clf.predict(X_train)
     pred_test = tree_clf.predict(X_test)
-    #Calculate the score
+    #Calcular la precisión en entrenamiento y evaluación
     acc_score_train = accuracy_score(y_train, pred_train)
     acc_score_test = accuracy_score(y_test, pred_test)
     f1 = f1_score(y_test, pred_test)
@@ -60,7 +60,7 @@ def test_tree(X_train, X_test, y_train, y_test, model_path = 'models/dec_tree.pk
     return pred_test, acc_score_train, acc_score_test, f1
 
 def plot_confusion_matrix(y_test, pred_test):
-    """Confusion matrix"""
+    """Función para graficar la matrix de confusión"""
     cm = confusion_matrix(y_test, pred_test)
     cm_display = ConfusionMatrixDisplay(confusion_matrix = cm, display_labels = ['Negative', 'Positive'])
     cm_display.plot()
@@ -68,10 +68,9 @@ def plot_confusion_matrix(y_test, pred_test):
     plt.show()
 
 def plots(y_test, pred_test):
-    #Curve ROC and AUC calculation
-    fpr, tpr, thresholds = roc_curve(y_test, pred_test)
+    '''Función para graficar la curva AUC y la curva ROC'''
 
-    #Calculate AUC value
+    fpr, tpr, thresholds = roc_curve(y_test, pred_test)
     auc_score = auc(fpr, tpr)
 
     #Plot ROC curve

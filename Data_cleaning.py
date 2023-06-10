@@ -180,4 +180,4 @@ def process_data(df_raw):
 
     df_raw['review']=df_raw['review'].apply(lambda x: remove_stopwords(tokenizer, stopword_list, x))
 
-    return df_raw #.to_csv('IMDB_reviews_cleaned.csv', index = False)
+    return df_raw

@@ -6,6 +6,8 @@ import tensorflow as tf
 from keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
+DICT_SIZE = 25000
+
 def tokenize_data(imdb_df):
 
     X = imdb_df['review']
@@ -23,7 +25,7 @@ def tokenize_data(imdb_df):
         return int(np.ceil(np.mean(review_length)))
 
     '''Se crear un Tokenizer que servirá de diccionario para etiquetas las palabra que usará x_train como fuente'''
-    token = Tokenizer(lower=False,  oov_token='OOV') 
+    token = Tokenizer(num_words = DICT_SIZE, lower=False,  oov_token='OOV') 
     token.fit_on_texts(x_train)
    
 
@@ -41,7 +43,5 @@ def tokenize_data(imdb_df):
     X_test = np.array(x_test).astype('int32')
     y_test = np.array(y_test).reshape((-1,1))
 
-    total_words = len(token.word_index) + 1
-
-    return (X_train, X_test, y_train, y_test, total_words, max_seq_length)
+    return (X_train, X_test, y_train, y_test, DICT_SIZE, max_seq_length)
 

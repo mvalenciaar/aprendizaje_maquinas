@@ -5,13 +5,23 @@ import time
 import numpy as np
 from keras.models import Sequential
 from keras.layers import Embedding, Dropout, Conv1D, GlobalMaxPooling1D, Dense, MaxPooling1D
-from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
+from sklearn.model_selection import ParameterGrid, GridSearchCV
+from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
+from keras.callbacks import ModelCheckpoint , EarlyStopping
 from sklearn.metrics import f1_score
 from sklearn.metrics import  confusion_matrix, ConfusionMatrixDisplay, classification_report  # for model evaluation metrics
 
 # ARCHITECTURE
 EMBED_DIM = 32
 LSTM_OUT = 64
+
+# Parámetros para GridSearch
+param_grid = {
+    'filters': [64, 128],
+    'batch_size': [32, 64],
+    'epochs': [5, 10],
+    'dropout_rate': [0.25, 0.5, 0.75],
+}
 
 callback_list = [
                  ModelCheckpoint(
@@ -23,8 +33,7 @@ callback_list = [
                      mode = 'max',
                      period = 1
                  ),
-                 
-                 EarlyStopping(
+                EarlyStopping(
                     monitor = 'val_accuracy',
                     patience = 5,
                     verbose = 1,
@@ -32,27 +41,17 @@ callback_list = [
                     baseline = 0.5,
                     restore_best_weights = True
                  ),
-
-                 ReduceLROnPlateau(
-                     monitor = 'val_loss',
-                     factor = 0.2,
-                     patience = 2,
-                     verbose = 1,
-                     mode = 'min',
-                     cooldown = 1,
-                     min_lr = 0
-                 )
 ]
 
 def run_cnn_model(X_train, X_test, y_train, y_test, total_words, max_seq_length):
     '''Construye, entrena y evalúa el modelo'''
-    model_cnn = build_cnn_model(total_words, max_seq_length)
+    model_cnn = KerasClassifier(build_fn = build_cnn_model, verbose = 1, total_words = total_words, max_seq_length = max_seq_length)
     model_cnn, history_cnn = train_model(model_cnn, X_train, y_train)
     plot_loss_curves(history_cnn)
     test_model_cnn(model_cnn, X_test, y_test)
     plot_confusion_matrix(model_cnn, X_test, y_test)
 
-def build_cnn_model(total_words = 10000, max_seq_length = 130, filters = 64, rate = 0.35):
+def build_cnn_model(total_words = 10000, max_seq_length = 130, filters = 64, dropout_rate = 0.35):
     '''Crea la red convolucional de una dimensión con una capa de max pooling y dropout'''
     model = Sequential([
         Embedding(total_words, EMBED_DIM, input_length = max_seq_length),
@@ -61,42 +60,60 @@ def build_cnn_model(total_words = 10000, max_seq_length = 130, filters = 64, rat
         MaxPooling1D(pool_size = 7),
         GlobalMaxPooling1D(),
         Dense(128, activation= 'relu'),
-        Dropout(rate),
+        Dropout(dropout_rate),
         Dense(1, activation= 'sigmoid')
     ])
 
     model.summary()
 
-    # Compile the model
     model.compile(loss ='binary_crossentropy',
                   optimizer = 'adam',
                   metrics = ['accuracy'])
 
     return model
 
-def train_model(model_cnn, X_train, y_train):  
-    history_cnn = model_cnn.fit(X_train,
-                    y_train,
-                    epochs = 10,
-                    batch_size = 64,
-                    verbose = 1,
-                    callbacks = callback_list,
-                    validation_split = 0.3,
-                    shuffle = True)
-    return (model_cnn, history_cnn)
-    
+def display_cv_results(search_results):
+  '''Función para mostrar los resultados del GridSearch'''
+  print('Mejor Puntuación = {:.4f} usando {}'.format(search_results.best_score_, search_results.best_params_))
+  means = search_results.cv_results_['mean_test_score']
+  stds = search_results.cv_results_['std_test_score']
+  params = search_results.cv_results_['params']
+  for mean, stdev, param in zip(means, stds, params):
+      print('Precisión promedia en validación +/- std = {:.4f} +/- {:.4f} with: {}'.format(mean, stdev, param))  
+
+def train_model(model_cnn, X_train, y_train):
+    '''Entrenamiento exhaustivo usando GridSearchCV'''
+    start= time.time()
+    grid = GridSearchCV(estimator= model_cnn, param_grid=param_grid, n_jobs=-1, cv=3)
+    grid_result = grid.fit(X_train,y_train)
+
+     #Mostrar resultados finales
+    print('time for grid search = {:.0f} sec'.format(time.time()-start))
+    display_cv_results(grid_result)
+
+    # Cargar el mejor modelo
+    mlp = grid_result.best_estimator_
+
+    # Entrenar el conjunto de entrenamiento con el mejor modelo obtenido
+    history = mlp.fit(
+        X_train,
+        y_train,
+        validation_split = 0.3,
+        epochs = 10,
+        callbacks = callback_list    
+    )
+
+    return mlp, history
 
 def test_model_cnn(model_cnn, X_test, y_test):
     '''Evalúa el modelo y devuelve la precisión y f1 score'''
-    _, accuracy = model_cnn.evaluate(X_test, y_test)
+    _, accuracy = model_cnn.model.evaluate(X_test, y_test)
     print(f"Test accuracy: {accuracy}")
 
     y_pred = model_cnn.predict(X_test)
-    # Convert the predicted probabilities to binary labels
+    # Convertir etiquetas predichas en etiquetas binarias
     y_pred = (y_pred > 0.5).astype(int)
-    # Compute the F1 score
     f1 = f1_score(y_test, y_pred)
-    # Print the F1 score
     print("F1 score:", f1)
 
 def plot_loss_curves(model):
