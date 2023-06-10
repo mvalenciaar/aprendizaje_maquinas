@@ -126,6 +126,10 @@ La Red Neuronal LSTM es un tipo de red neuronal recurrente, las cuales son muy �
 
 La Red Neuronal LSTM ofrece la capacidad de guardar información que puede ser relevante para el contexto de la serie temporal y también determinar la información que puede ser despreciable.
 
+![GridSearch_LSTM](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/b58e324e-8323-4afe-ab3a-af59d2046f69)
+
+Figura X. Resultados De GridSearchCV para modelo LSTM
+
 Para el modelo LSTM se creó un modelo simple que recibe la información tokenizada a través de una capa Embedding, para seguir con una capa recurrente (LSTM) de 64 perceptrones. Se tienen también dos capas Dropout que ayudarán a disminuir el sobrentrenamiento del modelo. El Modelo fue entrenado durante 7 épocas (aunque solo realizó 5 debido al early stopping). En el conjunto de evaluación se obtuvo una precisión o accuracy de 0.8636 y un F1-score de 0.8693, y un 0.9117 de precisión obtenido en la fase de entrenamiento.
 
 A continuación se presentan los resultados del entrenamiento y la matriz de confusión:
