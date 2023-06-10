@@ -102,15 +102,19 @@ Se considera pertinente aclarar que para ambos modelos presentados se va a inclu
 
 #### **Red Neuronal Convolucional**
 
-Las Redes Neuronales Convolucionales son ampliamente usadas en el campo de detección de objetos y clasificación de imágenes, pero también pueden tener aplicaciones en el campo del procesamiento de lenguaje natural, bajo ciertas condiciones. La principal diferencia es el uso de una capa Convolucional con filtros de una dimensión, lo cuál sigue los mismos lineamientos de los filtros de una red convolucional pero con filtros en forma de vector unidimensional en vez de una matriz, y el resultado de este proceso será un espacio vectorial con las características más relevantes de la entrada ingresada en este caso rasgos semánticos relevantes detectados. Para el modelo propuesto se inicia como se mencionó anteriormente con una capa Embedding, seguido de una capa Convolucional unidimensional con un max pooling para la detección de atributos más relevantes. Se termina con una capa neuronal clásica con el resultado de la convolución y una función de activación sigmoide para devolver un resultado binario.
+Las Redes Neuronales Convolucionales son ampliamente usadas en el campo de detección de objetos y clasificación de imágenes, pero también pueden tener aplicaciones en el campo del procesamiento de lenguaje natural, bajo ciertas condiciones. La principal diferencia es el uso de una capa Convolucional con filtros de una dimensión, lo cuál sigue los mismos lineamientos de los filtros de una red convolucional pero con filtros en forma de vector unidimensional en vez de una matriz, y el resultado de este proceso será un espacio vectorial con las características más relevantes de la entrada ingresada en este caso rasgos semánticos relevantes detectados. Para el modelo propuesto se inicia como se mencionó anteriormente con una capa Embedding, seguido de una capa Convolucional unidimensional con un max pooling para la detección de atributos más relevantes. Se termina con una capa neuronal clásica con el resultado de la convolución y una función de activación sigmoide para devolver un resultado binario. Para determinar los mejores hiperparámetros se realiza una búsqueda exhaustiva usando GridSearchCV con resultados obtenidos como se muestra a continuación:
 
-El modelo fue entrenado durante 10 épocas pero paró en la séptima al no detectar mejoras en la precisión dentro del conjunto de validación, obteniendo así una precisión en entrenamiento del 100%. Para el conjunto de evaluación, se obtuvo una precisión o accuracy de 0.8580 y un F1-score de 0.8605. A continuación se muestran los resultados gráficos obtenidos durante el entrenamiento y la matriz de confusión:
+![CNN_Grid_Search](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/62723d83-efce-4228-aab7-48750d4588cd)
 
-![CNN_training_curves](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/966ba58a-ae0e-4bc3-a2de-6773786cf2a1)
+Figura X. Resultados De GridSearchCV para modelo CNN
+
+El modelo fue entrenado durante 10 épocas pero paró en la séptima al no detectar mejoras en la precisión dentro del conjunto de validación, obteniendo así una precisión en entrenamiento del 100%. Para el conjunto de evaluación, se obtuvo una precisión o accuracy de 0.8540 y un F1-score de 0.8535. A continuación se muestran los resultados gráficos obtenidos durante el entrenamiento y la matriz de confusión:
+
+![CNN_training_curves](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/8cec4a60-61f6-42a6-8ab5-daaa5c12ab29)
 
 Figura X. Curva de función de pérdida para modelo CNN
 
-![CNN_cfm](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/3c71b808-5a39-495e-9ba8-3efb19e7fdfa)
+![CNN_cfm](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/8470de71-427f-4fb1-8253-1f7023da80b9)
 
 Figura X. Curva de función de pérdida para modelo CNN
 
@@ -122,23 +126,23 @@ La Red Neuronal LSTM es un tipo de red neuronal recurrente, las cuales son muy �
 
 La Red Neuronal LSTM ofrece la capacidad de guardar información que puede ser relevante para el contexto de la serie temporal y también determinar la información que puede ser despreciable.
 
-Para el modelo LSTM se creó un modelo simple que recibe la información tokenizada a través de una capa Embedding, para seguir con una capa recurrente (LSTM) de 64 perceptrones. Se tienen también dos capas Dropout que ayudarán a disminuir el sobrentrenamiento del modelo. El Modelo fue entrenado durante 7 épocas (aunque solo realizó 5 debido al early stopping). En el conjunto de evaluación se obtuvo una precisión o accuracy de 0.8635 y un F1-score de 0.8585, relativamente bajos comparados con el 0.9999 de precisión obtenido en la fase de entrenamiento.
+Para el modelo LSTM se creó un modelo simple que recibe la información tokenizada a través de una capa Embedding, para seguir con una capa recurrente (LSTM) de 64 perceptrones. Se tienen también dos capas Dropout que ayudarán a disminuir el sobrentrenamiento del modelo. El Modelo fue entrenado durante 7 épocas (aunque solo realizó 5 debido al early stopping). En el conjunto de evaluación se obtuvo una precisión o accuracy de 0.8636 y un F1-score de 0.8693, y un 0.9117 de precisión obtenido en la fase de entrenamiento.
 
 A continuación se presentan los resultados del entrenamiento y la matriz de confusión:
 
-![lstm_loss_function](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/85eb54de-fa76-45dd-bf7f-65e7a613a66f)
+![lstm_loss_function](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/22dcc110-7531-40f0-b7bf-6390996bf0c0)
 
 Figura X. Curva de función de pérdida para modelo LSTM
 
-![lstm_precision_curve](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/ba41e04c-5ec6-4cea-8692-b7185f4256de)
+![lstm_precision_curve](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/82c6205a-a57b-4731-8843-fc5e522e272b)
 
 Figura X. Curva de precisión para modelo LSTM
 
-![lstm_cfm](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/a231299b-7576-4933-a6a4-7dab12171ca6)
+![lstm_cfm](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/5d3d5e00-1232-42ea-b6fa-d285b5f566eb)
 
 Figura X. Matriz de confusión LSTM
 
-Al igual que con el modelo convolucional se nota un sobrentrenamiento notorio que puede deberse a un rápido aprendizaje de patrones en las reseñas de películas. Se nota una leve mejoría con respecto al modelo CNN.
+A diferencia del modelo convolucional no se nota un sobrentrenamiento notorio que puede deberse a la regularización aplicada antes y después de la capa recurrente. Es posible que con más épocas de entrenamiento pueda darse una leve mejoría en la precisión. 
 
 ### **Modelos tradicionales de Aprendizaje de Máquinas**
 #### **Modelo regresión logistica**
