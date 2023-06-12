@@ -207,7 +207,7 @@ Este se utiliza con la librería de Python `Keras`, y la función de esta librer
 <img width="635" alt="Tokenization" src="https://github.com/mvalenciaar/aprendizaje_maquinas/assets/56141354/0419b6d8-8669-4b31-bdff-80bf2991ec20">
 
 
-Figura 4. Tokenización
+Figura 8. Tokenización
 
 
 Posteriormente, se tokeniza el conjunto de entrenamiento y validación, en donde se añade un `padding` para que todas las reseñas tengan la misma longitud al momento del procesamiento en el modelo analítico.
@@ -222,19 +222,19 @@ Se considera pertinente aclarar que para ambos modelos presentados se va a inclu
 
 Las Redes Neuronales Convolucionales son ampliamente usadas en el campo de detección de objetos y clasificación de imágenes, pero también pueden tener aplicaciones en el campo del procesamiento de lenguaje natural, bajo ciertas condiciones. La principal diferencia es el uso de una capa Convolucional con filtros de una dimensión, lo cuál sigue los mismos lineamientos de los filtros de una red convolucional pero con filtros en forma de vector unidimensional en vez de una matriz, y el resultado de este proceso será un espacio vectorial con las características más relevantes de la entrada ingresada en este caso rasgos semánticos relevantes detectados. Para el modelo propuesto se inicia como se mencionó anteriormente con una capa Embedding, seguido de una capa Convolucional unidimensional con un max pooling para la detección de atributos más relevantes. Se termina con una capa neuronal clásica con el resultado de la convolución y una función de activación sigmoide para devolver un resultado binario. Para determinar los mejores hiperparámetros se realiza una búsqueda exhaustiva usando GridSearchCV con resultados obtenidos como se muestra a continuación:
 
-![CNN_Grid_Search](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/62723d83-efce-4228-aab7-48750d4588cd)
+![CNN_Grid_Search](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/70264c33-68af-4604-aff6-0ef09957c06f)
 
-Figura X. Resultados De GridSearchCV para modelo CNN
+Figura 9. Resultados De GridSearchCV para modelo CNN
 
-Los mejores hiperparámetros que se obtuvieron fueron los siguientes: {'batch_size': 32, 'dropout_rate': 0.25, 'epochs': 5, 'filters': 64}, dónde el dropout rate hace referencia a la probabilidad de apagado de neuronas en la capa Dropout. El modelo fue entrenado durante 10 épocas pero paró en la séptima al no detectar mejoras en la precisión dentro del conjunto de validación, obteniendo así una precisión en entrenamiento del 100%. Para el conjunto de evaluación, se obtuvo una precisión o accuracy de 0.8561 y un F1-score de 0.8618. A continuación se muestran los resultados gráficos obtenidos durante el entrenamiento y la matriz de confusión:
+Los mejores hiperparámetros que se obtuvieron fueron los siguientes: {'batch_size': 32, 'dropout_rate': 0.25, 'epochs': 10, 'filters': 64}, dónde el dropout rate hace referencia a la probabilidad de apagado de neuronas en la capa Dropout. El modelo fue entrenado durante 10 épocas obteniendo así una precisión en entrenamiento del 100%. Para el conjunto de evaluación, se obtuvo una precisión o accuracy de 0.8566 y un F1-score de 0.8591. A continuación se muestran los resultados gráficos obtenidos durante el entrenamiento y la matriz de confusión:
 
-![CNN_training_curves](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/8cec4a60-61f6-42a6-8ab5-daaa5c12ab29)
+![CNN_training_curves](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/7accc4f0-05ae-4c43-b3d3-d19947588e65)
 
-Figura X. Curva de función de pérdida para modelo CNN
+Figura 10. Curva de función de pérdida para modelo CNN
 
-![CNN_cfm](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/8470de71-427f-4fb1-8253-1f7023da80b9)
+![CNN_cfm](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/adea593c-9ecd-480c-93aa-102b8b8d69f9)
 
-Figura X. Curva de función de pérdida para modelo CNN
+Figura 11. Matriz de confusión para modelo CNN
 
 De estas gráficas se puede ver que el modelo tiene buen rendimiento para entender la secuencialidad presentada en las reseñas de películas pero presenta un sobrentrenamiento notorio. Esto puede ser debido a que el modelo parece aprender los patrones de secuencialidad presentados por la tokenización en sólo dos épocas. Es posible que la información para el modelo sea fácil de procesar y entender gracias a la capa de Embedding añadida.
 
@@ -244,48 +244,44 @@ La Red Neuronal LSTM es un tipo de red neuronal recurrente, las cuales son muy �
 
 La Red Neuronal LSTM ofrece la capacidad de guardar información que puede ser relevante para el contexto de la serie temporal y también determinar la información que puede ser despreciable.
 
-![GridSearch_LSTM](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/b58e324e-8323-4afe-ab3a-af59d2046f69)
+![GridSearch_LSTM](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/5758c989-7998-4df8-a41f-bf6b89a48c39)
 
-Figura X. Resultados De GridSearchCV para modelo LSTM
+Figura 12. Resultados De GridSearchCV para modelo LSTM
 
-Los mejores hiperparámetros que se obtuvieron fueron los siguientes: {'batch_size': 64, 'dropout_rate': 0.75, 'epochs': 5}, dónde el dropout rate hace referencia a la probabilidad de apagado de neuronas en la capa Dropout. Para el modelo LSTM se creó un modelo simple que recibe la información tokenizada a través de una capa Embedding, para seguir con una capa recurrente (LSTM) de 64 perceptrones. Se tienen también dos capas Dropout que ayudarán a disminuir el sobrentrenamiento del modelo. El Modelo fue entrenado durante 7 épocas (aunque solo realizó 5 debido al early stopping). En el conjunto de evaluación se obtuvo una precisión o accuracy de 0.8636 y un F1-score de 0.8691, y un 0.9497 de precisión obtenido en la fase de entrenamiento.
+Los mejores hiperparámetros que se obtuvieron fueron los siguientes: {'batch_size': 64, 'dropout_rate': 0.75, 'epochs': 5}, dónde el dropout rate hace referencia a la probabilidad de apagado de neuronas en la capa Dropout. Para el modelo LSTM se creó un modelo simple que recibe la información tokenizada a través de una capa Embedding, para seguir con una capa recurrente (LSTM) de 64 perceptrones. Se tienen también dos capas Dropout que ayudarán a disminuir el sobrentrenamiento del modelo. El Modelo fue entrenado durante 10 épocas (aunque solo realizó 7 debido al early stopping). En el conjunto de evaluación se obtuvo una precisión o accuracy de 0.8650 y un F1-score de 0.8672, y un 0.9432 de precisión obtenido en la fase de entrenamiento.
 
 A continuación se presentan los resultados del entrenamiento y la matriz de confusión:
 
-![lstm_loss_function](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/22dcc110-7531-40f0-b7bf-6390996bf0c0)
+![lstm_loss_function](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/c3228d4f-ab8e-497f-a68e-cf27b0b4a4ba)
 
-Figura X. Curva de función de pérdida para modelo LSTM
+Figura 13. Curva de función de pérdida para modelo LSTM
 
-![lstm_precision_curve](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/82c6205a-a57b-4731-8843-fc5e522e272b)
+![lstm_precision_curve](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/7b55c191-2757-43ff-bc10-a8570aa2b1a1)
 
-Figura X. Curva de precisión para modelo LSTM
+Figura 14. Curva de precisión para modelo LSTM
 
-![lstm_cfm](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/5d3d5e00-1232-42ea-b6fa-d285b5f566eb)
+![lstm_cfm](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/77431610-f956-42ba-b5d5-33dfbef71987)
 
-Figura X. Matriz de confusión LSTM
+Figura 15. Matriz de confusión LSTM
 
-A diferencia del modelo convolucional no se nota un sobrentrenamiento notorio que puede deberse a la regularización aplicada antes y después de la capa recurrente. Es posible que con más épocas de entrenamiento pueda darse una leve mejoría en la precisión. 
+Al igual que el modelo convolucional se nota un sobrentrenamiento notorio que puede deberse a la regularización aplicada antes y después de la capa recurrente y que aprende rápido de los datos. Es posible que con más épocas de entrenamiento pueda darse una leve mejoría en la precisión. 
 
 ### **Modelos tradicionales de Aprendizaje de Máquinas**
 #### **Modelo regresión logistica**
 
 La regresión logistica es un tipo de analisis de regresión que busca predecir el resultado de una variable categorica (0 y 1) en función de las variables independientes o predictorias (reseñas).
 
-Para el modelo de regresión logistica se realizó un grid search con el objetivo de optimizar los hiperparametros del modelo, donde se encontró que los mejores hiperparametros fueron: (C=10.0, penalty='l2', max_iter=500). Sin embargo, el desempeño del modelo no fue el más optimo puesto que presento una precisión o accuracy del 0.535 y 0.512 para los datos de entrenamiento y test, respectivamente. Además el modelo presento un valor del 0.562 para el F1 score. A continuación se presenta la matriz de confusión para el modelo, ver Figura 5.
+Para el modelo de regresión logistica se realizó un grid search con el objetivo de optimizar los hiperparametros del modelo, donde se encontró que los mejores hiperparametros fueron: (C=10.0, penalty='l2', max_iter=500). Sin embargo, el desempeño del modelo no fue el más optimo puesto que presento una precisión o accuracy del 0.5223 y 0.5099 para los datos de entrenamiento y test, respectivamente. Además el modelo presento un valor del 0.6001 para el F1 score. A continuación se presenta la matriz de confusión para el modelo, ver Figura 16.
 
+![lr_cfm](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/360707f9-6258-40af-aabf-6dc34e8538f0)
 
-![lr_cfm](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/103476375/032dd4fa-5448-4fcf-8581-4f81017ea4da)
+Figura 16. Matriz de confusión regresión logistica.
 
+La curva ROC es una presentación grafica de la sensibilidad frente a la especificidad para un sistema de clasificación. Donde entre más cercana se encuentre la curva a la esquina superior izquierda, significa un mejor desempeño del modelo, caso contrario es equivalente a una clasificación 'aleatoria'. Como se observa en la Figura 17, el modelo se acerca a una clasificación aleatoria y no a una buena clasificación.
 
-Figura 5. Matriz de confusión regresión logistica.
+![curva_ROC_logistic_regresion](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/f27deed1-127e-430a-b815-b84c6f2199a7)
 
-La curva ROC es una presentación grafica de la sensibilidad frente a la especificidad para un sistema de clasificación. Donde entre más cercana se encuentre la curva a la esquina superior izquierda, significa un mejor desempeño del modelo, caso contrario es equivalente a una clasificación 'aleatoria'. Como se observa en la Figura 6, el modelo se acerca a una clasificación aleatoria y no a una buena clasificación.
-
-
-![curva_ROC_logistic_rehresion](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/103476375/2dbc6f9f-d535-4fee-955c-f60aff64e948)
-
-
-Figura 6. Curva ROC regresión logistica.
+Figura 17. Curva ROC regresión logistica.
 
 Finalmente, se concluye que el modelo de regresión logistica no presenta un buen desempeño para la calsificación de reseñas de peliculas.
 
@@ -293,19 +289,38 @@ Finalmente, se concluye que el modelo de regresión logistica no presenta un bue
 
 Un arbol de decisión es un modelo de aprendizaje supervisado, que puede ser utilizado para modelos de clasificación. El cual tiene una estructura de arbol jerarquico, consta de nodo raiz, ramas, nodos internos y nodos hojas.
 
-Para realizar el entrenamiento del arbol de decisión se realizó un grid search buscando optimizar los hiperparametros para un mejor desempeño del modelo. Sin embargo, luego de evaluar el modelo no es un modelo muy optimo y presenta un desempeño bajo con los siguientes valores: precisión o accuracy de 0.543 y 0.523 para los datos de entrenamiento y test, respectivamente, adicionalmente el valor F1 score fue de 0.486. A continuación se presenta la matriz de confusión, ver Figura 7, y la curva ROC, ver Figura 8, la cual nuevamente se aleja de la esquina superior izquiera (optimo) y se acerca a una clasificación 'aleatoria'.
+Para realizar el entrenamiento del arbol de decisión se realizó un grid search buscando optimizar los hiperparametros para un mejor desempeño del modelo. Sin embargo, luego de evaluar el modelo no es un modelo muy optimo y presenta un desempeño bajo con los siguientes valores: precisión o accuracy de 0.5460 0.5211ara los datos de entrenamiento y test, respectivamente, adicionalmente el valor F1 score fue de 0.4329. A continuación presenta la matriz de confusión, ver Figura 18, y la curva ROC, ver Figura 19, la cual nuevamente se aleja de la esquina superior izquiera (optimo) y se acerca a una clasificación 'aleatoria'.
+
+![matriz_confusion_decision_tree](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/b14a4331-9a76-4590-8608-294d18f15c2a)
+
+Figura 18. Matriz de confusión arbol de decisiones.
+
+![curva_ROC_decision_tree](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/c2ccb89b-01e0-41c9-bc79-33d0a37ed2d8)
+
+Figura 19. Curva ROC arbol de decisión.
 
 
-![matriz_confusion_decision_tree](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/103476375/b494c0b6-0e18-4e28-9181-d36b44b174ee)
+#### **Mejora para Modelo de Regresión logística
 
+Para mejorar la precisión de los modelos clásicos de aprendizaje de máquinas, se decide realizar un proceso de tokenización diferente al usado inicialmente, el cual consistirá en usar la función `CountVectorizer`. A diferencia de la función Tokenizer, CountVectorizer devuelve una representación vectorial donde cada elemento corresponde a la cantidad de veces que aparece una palabra obtenida del vocabulario de todos los documentos obtenidos, por ejemplo:
 
-Figura 7. Matriz de confusión arbol de decisiones.
+[[0 0 1 1 0 0 1 0 0 0 0 1 0]
+ [0 1 0 1 0 1 0 1 0 0 1 0 0]
+ [1 0 0 1 0 0 0 0 1 1 0 1 0]
+ [0 0 1 0 1 0 1 0 0 0 0 0 1]]
 
+Dónde cada fila de la matriz hace referencia a a un documento vectorizado. Los elementos de cada documento pueden ser binarios o valores mayor a 1 que representen mayor frecuencia. Después de aplicar el proceso de tokenización y entrenar el modelo, se obtienen los siguientes resultados (Ver figuras 20 y 21):
 
-![curva_ROC_decision_tree](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/103476375/eb349290-3c0e-4989-a5f8-7491315de0b2)
+![image](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/f6f8d703-540e-4a64-80ce-1175362cc985)
 
+Figura 20. Matriz de confusión de regresión logística mejorada
 
-Figura 8. Curva ROC arbol de decisión.
+![image](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/10b6c07b-871e-4cc5-a3a6-fc82815ada2c)
+
+Figura 21. Curva ROC de regresión logísitca mejorada.
+
+Gráficamente se ve que se obtuvien muy buenos resultados con respecto al uso de la función Tokenizer para parametrizar el conjunto de datos. Con respecto a las métricas, se obtuvo una precisión en entrenamiento de 0.9999, en el conjunto de evaluación de 0.8723 y un F1-score de 0.8738. Esta mejoría puede explicarse a que los métodos clásicos de aprendizaje de máquinas esperan una entrada fija numérica, y no desarrollan inteés en aprender de procesos secuenciales (caso necesario para los métodos de aprendizaje profundo).
+
 
 ### **Conclusiones**
 
