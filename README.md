@@ -83,8 +83,108 @@ Figura 3. Remoción de Stopwords
 
 Después de aplicar los procesos de lenguaje natural a las reseñas, se considera pertinente revisar las palabras claves más comunes entre reseñas positivas y negativas y así entender los procesos que deberán realizar los métodos de Inteligencia Artificial propuestos. A continuación se muestran los resultados:
 
+================================================Palabras más comunes de reseñas con sentimientos positivos =================================================
+       word  count
+0   (film,)  48523
+1  (movie,)  42929
+2    (one,)  26843
+3    (see,)  21185
+4   (make,)  19755
+5   (like,)  19292
+6   (good,)  17262
+7    (get,)  15922
+8   (time,)  15192
+9  (great,)  13973
+
+![palabras positivas más comunes](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/035250bb-aad3-43cb-bf44-ba4cc61cc695)
+
+Figura 4. Palabras de reseñas positivas más comunes.
+
+================================================Palabras más comunes de reseñas con sentimientos negativos =================================================
+       word  count
+0  (movie,)  55342
+1   (film,)  42290
+2    (one,)  25431
+3   (make,)  23257
+4   (like,)  23140
+5    (bad,)  20604
+6    (get,)  19094
+7    (see,)  19080
+8   (good,)  18150
+9   (even,)  14812
+
+![palabras negativas más comunes](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/8ee9fd02-05ce-4cc2-9f22-c96c29938651)
+
+Figura 5. Palabras de reseñas negativas más comunes.
+
+Cómo se puede ver mirando solo palabras comunes no se puede determinar de forma inmediata el sentimiento de una palabra contando palabras comunes debido a que ambos tipos de reseñas comparten palabras comunes (exceptuando 'bad'). Para esto, es conveniente revisar bigramas y trigramas; es decir, combinaciones de 2 y 3 palabras más comunes. El resultado se muestra en las siguientes gráficas:
 
 
+================================================Bigramas más comunes de reseñas con sentimientos positivos =================================================
+word  count
+0     (one, best)   1608
+1    (see, movie)   1364
+2  (watch, movie)   1250
+3      (ive, see)   1056
+4     (see, film)   1039
+5     (ever, see)   1024
+6  (even, though)   1008
+7    (look, like)    916
+8   (first, time)    908
+9    (dont, know)    859
+
+================================================Trigramas más comunes de reseñas con sentimientos positivos =================================================
+                  word  count
+0     (ive, ever, see)    345
+1    (new, york, city)    186
+2     (film, ive, see)    159
+3   (one, best, movie)    156
+4     (world, war, ii)    152
+5   (film, ever, make)    151
+6   (movie, ever, see)    142
+7    (one, best, film)    142
+8    (movie, ive, see)    134
+9  (base, true, story)    123
+
+![image](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/167cca40-3bc2-45f6-be19-832157027e41)
+
+![image](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/fb86cd25-c0b4-4148-8a0e-02c774b4c4ab)
+
+Figura 6. Bigramas y Trigramas más comunes en reseñas positivas.
+
+================================================Bigramas más comunes de reseñas con sentimientos negativos =================================================
+                word  count
+0       (look, like)   2714
+1       (bad, movie)   2371
+2        (ever, see)   1751
+3     (watch, movie)   1711
+4      (waste, time)   1559
+5  (special, effect)   1406
+6      (make, movie)   1335
+7       (see, movie)   1260
+8       (dont, know)   1177
+9        (bad, film)   1124
+
+================================================Trigramas más comunes de reseñas con sentimientos negativos =================================================
+                  word  count
+0     (ive, ever, see)    635
+1   (bad, movie, ever)    566
+2   (movie, ever, see)    378
+3    (one, bad, movie)    347
+4  (dont, waste, time)    307
+5   (movie, ive, ever)    270
+6    (bad, film, ever)    260
+7    (bad, movie, ive)    247
+8  (movie, ever, make)    229
+9    (film, ever, see)    191
+
+![image](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/8e3ea13d-b283-4714-ad4a-b76102702796)
+
+![image](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/7a423548-fabd-48a9-afe8-7e1c09f9f33e)
+
+Figura 7. Bigramas y Trigramas más comunes en reseñas negativas.
+
+De estas gráficas se puede concluir que hay formas de diferenciar los sentimientos de las reseñas mirando combinaciones de varias palabras, por lo cuál va a ser importante considerar la secuencilidad y la cantidad de veces que aparecen las palabras en las reseñas.
 
 ### **Tokenización**
 
