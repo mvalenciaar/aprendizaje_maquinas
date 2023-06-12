@@ -87,16 +87,16 @@ Después de aplicar los procesos de lenguaje natural a las reseñas, se consider
 
 Word  | Count
 ------------- | -------------
-1. film  | 48523
-2. movie  | 42929
-3. one  | 26843
-4. see | 21185
-5. make | 19755
-6. like  | 19292
-7. good | 17262
-8. get | 15922
-9. time | 15192
-10. great | 13973
+film  | 48523
+movie  | 42929
+one  | 26843
+see | 21185
+make | 19755
+like  | 19292
+good | 17262
+get | 15922
+time | 15192
+great | 13973
 
 ![palabras positivas más comunes](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/035250bb-aad3-43cb-bf44-ba4cc61cc695)
 
@@ -106,16 +106,16 @@ Figura 4. Palabras de reseñas positivas más comunes.
 
 Word  | Count
 ------------- | -------------
-1. movie  | 55342
-2. film  | 42290
-3. one  | 25431
-4, make | 23257
-5, like | 23140
-6, bad  | 20604
-7. get | 19094
-8. see | 19080
-9. good | 18150
-10. even | 14812
+movie  | 55342
+film  | 42290
+one  | 25431
+make | 23257
+like | 23140
+bad  | 20604
+get | 19094
+see | 19080
+good | 18150
+even | 14812
 
 ![palabras negativas más comunes](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/8ee9fd02-05ce-4cc2-9f22-c96c29938651)
 
