@@ -125,30 +125,34 @@ Cómo se puede ver mirando solo palabras comunes no se puede determinar de forma
 
 
 ================================================Bigramas más comunes de reseñas con sentimientos positivos =================================================
-word  count
-0     (one, best)   1608
-1    (see, movie)   1364
-2  (watch, movie)   1250
-3      (ive, see)   1056
-4     (see, film)   1039
-5     (ever, see)   1024
-6  (even, though)   1008
-7    (look, like)    916
-8   (first, time)    908
-9    (dont, know)    859
+
+Word  | Count
+------------- | -------------
+(one, best) | 1608
+(see, movie) | 1364
+(watch, movie) | 1250
+(ive, see) | 1056
+(see, film) | 1039
+(ever, see) | 1024
+(even, though) | 1008
+(look, like) | 916
+(first, time) | 908
+(dont, know) | 859
 
 ================================================Trigramas más comunes de reseñas con sentimientos positivos =================================================
-                  word  count
-0     (ive, ever, see)    345
-1    (new, york, city)    186
-2     (film, ive, see)    159
-3   (one, best, movie)    156
-4     (world, war, ii)    152
-5   (film, ever, make)    151
-6   (movie, ever, see)    142
-7    (one, best, film)    142
-8    (movie, ive, see)    134
-9  (base, true, story)    123
+
+Word  | Count
+------------- | -------------
+(ive, ever, see) | 345
+(new, york, city) | 186
+(film, ive, see) | 159
+(one, best, movie) | 156
+(world, war, ii) | 152
+(film, ever, make) | 151
+(movie, ever, see) | 142
+(one, best, film) | 142
+(movie, ive, see) | 134
+(base, true, story) | 123
 
 ![image](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/167cca40-3bc2-45f6-be19-832157027e41)
 
@@ -157,31 +161,35 @@ word  count
 Figura 6. Bigramas y Trigramas más comunes en reseñas positivas.
 
 ================================================Bigramas más comunes de reseñas con sentimientos negativos =================================================
-                word  count
-0       (look, like)   2714
-1       (bad, movie)   2371
-2        (ever, see)   1751
-3     (watch, movie)   1711
-4      (waste, time)   1559
-5  (special, effect)   1406
-6      (make, movie)   1335
-7       (see, movie)   1260
-8       (dont, know)   1177
-9        (bad, film)   1124
+
+Word  | Count
+------------- | -------------
+(look, like) | 2714
+(bad, movie) | 2371
+(ever, see) | 1751
+(watch, movie) | 1711
+(waste, time) | 1559
+(special, effect) | 1406
+(make, movie) | 1335
+(see, movie) | 1260
+(dont, know) | 1177
+(bad, film) | 1124
 
 ================================================Trigramas más comunes de reseñas con sentimientos negativos =================================================
-                  word  count
-0     (ive, ever, see)    635
-1   (bad, movie, ever)    566
-2   (movie, ever, see)    378
-3    (one, bad, movie)    347
-4  (dont, waste, time)    307
-5   (movie, ive, ever)    270
-6    (bad, film, ever)    260
-7    (bad, movie, ive)    247
-8  (movie, ever, make)    229
-9    (film, ever, see)    191
 
+Word  | Count
+------------- | -------------
+(ive, ever, see) | 635
+(bad, movie, ever) | 566
+(movie, ever, see) | 378
+(one, bad, movie) | 347
+(dont, waste, time) | 307
+(movie, ive, ever) | 270
+(bad, film, ever) | 260
+(bad, movie, ive) | 247
+(movie, ever, make) | 229
+(film, ever, see) | 191
+ 
 ![image](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/8e3ea13d-b283-4714-ad4a-b76102702796)
 
 ![image](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/7a423548-fabd-48a9-afe8-7e1c09f9f33e)
