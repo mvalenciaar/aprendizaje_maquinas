@@ -84,23 +84,39 @@ Figura 3. Remoción de Stopwords
 Después de aplicar los procesos de lenguaje natural a las reseñas, se considera pertinente revisar las palabras claves más comunes entre reseñas positivas y negativas y así entender los procesos que deberán realizar los métodos de Inteligencia Artificial propuestos. A continuación se muestran los resultados:
 
 ================================================Palabras más comunes de reseñas con sentimientos positivos =================================================
-       word  count
-0   (film,)  48523
-1  (movie,)  42929
-2    (one,)  26843
-3    (see,)  21185
-4   (make,)  19755
-5   (like,)  19292
-6   (good,)  17262
-7    (get,)  15922
-8   (time,)  15192
-9  (great,)  13973
+
+Word  | Count
+------------- | -------------
+film  | 48523
+movie  | 42929
+one  | 26843
+see | 21185
+make | 19755
+like  | 19292
+good | 17262
+get | 15922
+time | 15192
+great | 13973
 
 ![palabras positivas más comunes](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/035250bb-aad3-43cb-bf44-ba4cc61cc695)
 
 Figura 4. Palabras de reseñas positivas más comunes.
 
 ================================================Palabras más comunes de reseñas con sentimientos negativos =================================================
+
+Word  | Count
+------------- | -------------
+film  | 48523
+movie  | 42929
+one  | 26843
+see | 21185
+make | 19755
+like  | 19292
+good | 17262
+get | 15922
+time | 15192
+great | 13973
+
        word  count
 0  (movie,)  55342
 1   (film,)  42290
