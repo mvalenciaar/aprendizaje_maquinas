@@ -62,13 +62,13 @@ La librería utilizada de Python para el proceso de remoción de Stopwords es NL
 A continuación, se muestra para nuestro dataset de trabajo como se genera esta transformación de lematización:
 
 
-![Screen Shot 2023-06-02 at 9 34 37 PM](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/56141354/0db2cb42-abc1-47a5-9e96-5a1dcdc37daa)
+![Lematización](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/56141354/0db2cb42-abc1-47a5-9e96-5a1dcdc37daa)
 
 
 Figura 2. Proceso de Lematización
 
 
-### **Remoción de Stopwords**
+#### **Remoción de Stopwords**
 
 Esta técnica elimina palabras que no contienen significado alguno, por ejemplo: preposiciones, pronombres, conectores, entre otros.
 La librería utilizada de Python para el proceso de remoción de Stopwords es `NLTK`.
@@ -78,6 +78,12 @@ La librería utilizada de Python para el proceso de remoción de Stopwords es `N
 
 
 Figura 3. Remoción de Stopwords
+
+#### **Análisis de palabras comunes**
+
+Después de aplicar los procesos de lenguaje natural a las reseñas, se considera pertinente revisar las palabras claves más comunes entre reseñas positivas y negativas y así entender los procesos que deberán realizar los métodos de Inteligencia Artificial propuestos. A continuación se muestran los resultados:
+
+
 
 
 ### **Tokenización**
@@ -108,7 +114,7 @@ Las Redes Neuronales Convolucionales son ampliamente usadas en el campo de detec
 
 Figura X. Resultados De GridSearchCV para modelo CNN
 
-El modelo fue entrenado durante 10 épocas pero paró en la séptima al no detectar mejoras en la precisión dentro del conjunto de validación, obteniendo así una precisión en entrenamiento del 100%. Para el conjunto de evaluación, se obtuvo una precisión o accuracy de 0.8540 y un F1-score de 0.8535. A continuación se muestran los resultados gráficos obtenidos durante el entrenamiento y la matriz de confusión:
+Los mejores hiperparámetros que se obtuvieron fueron los siguientes: {'batch_size': 32, 'dropout_rate': 0.25, 'epochs': 5, 'filters': 64}, dónde el dropout rate hace referencia a la probabilidad de apagado de neuronas en la capa Dropout. El modelo fue entrenado durante 10 épocas pero paró en la séptima al no detectar mejoras en la precisión dentro del conjunto de validación, obteniendo así una precisión en entrenamiento del 100%. Para el conjunto de evaluación, se obtuvo una precisión o accuracy de 0.8561 y un F1-score de 0.8618. A continuación se muestran los resultados gráficos obtenidos durante el entrenamiento y la matriz de confusión:
 
 ![CNN_training_curves](https://github.com/mvalenciaar/aprendizaje_maquinas/assets/32648633/8cec4a60-61f6-42a6-8ab5-daaa5c12ab29)
 
@@ -130,7 +136,7 @@ La Red Neuronal LSTM ofrece la capacidad de guardar información que puede ser r
 
 Figura X. Resultados De GridSearchCV para modelo LSTM
 
-Para el modelo LSTM se creó un modelo simple que recibe la información tokenizada a través de una capa Embedding, para seguir con una capa recurrente (LSTM) de 64 perceptrones. Se tienen también dos capas Dropout que ayudarán a disminuir el sobrentrenamiento del modelo. El Modelo fue entrenado durante 7 épocas (aunque solo realizó 5 debido al early stopping). En el conjunto de evaluación se obtuvo una precisión o accuracy de 0.8636 y un F1-score de 0.8693, y un 0.9117 de precisión obtenido en la fase de entrenamiento.
+Los mejores hiperparámetros que se obtuvieron fueron los siguientes: {'batch_size': 64, 'dropout_rate': 0.75, 'epochs': 5}, dónde el dropout rate hace referencia a la probabilidad de apagado de neuronas en la capa Dropout. Para el modelo LSTM se creó un modelo simple que recibe la información tokenizada a través de una capa Embedding, para seguir con una capa recurrente (LSTM) de 64 perceptrones. Se tienen también dos capas Dropout que ayudarán a disminuir el sobrentrenamiento del modelo. El Modelo fue entrenado durante 7 épocas (aunque solo realizó 5 debido al early stopping). En el conjunto de evaluación se obtuvo una precisión o accuracy de 0.8636 y un F1-score de 0.8691, y un 0.9497 de precisión obtenido en la fase de entrenamiento.
 
 A continuación se presentan los resultados del entrenamiento y la matriz de confusión:
 

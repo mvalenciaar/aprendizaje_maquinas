@@ -64,7 +64,7 @@ def plot_confusion_matrix(y_test, pred_test):
     cm = confusion_matrix(y_test, pred_test)
     cm_display = ConfusionMatrixDisplay(confusion_matrix = cm, display_labels = ['Negative', 'Positive'])
     cm_display.plot()
-    plt.title('Matriz de confusión para modelo Regresión Logística')
+    plt.title('Matriz de confusión para modelo Árboles de Decisión')
     plt.show()
 
 def plots(y_test, pred_test):
