@@ -83,7 +83,7 @@ Figura 3. Remoción de Stopwords
 
 Después de aplicar los procesos de lenguaje natural a las reseñas, se considera pertinente revisar las palabras claves más comunes entre reseñas positivas y negativas y así entender los procesos que deberán realizar los métodos de Inteligencia Artificial propuestos. A continuación se muestran los resultados:
 
-================================================Palabras más comunes de reseñas con sentimientos positivos =================================================
+Palabras más comunes de reseñas con sentimientos positivos:
 
 Word  | Count
 ------------- | -------------
@@ -102,7 +102,7 @@ great | 13973
 
 Figura 4. Palabras de reseñas positivas más comunes.
 
-================================================Palabras más comunes de reseñas con sentimientos negativos =================================================
+Palabras más comunes de reseñas con sentimientos negativos:
 
 Word  | Count
 ------------- | -------------
@@ -124,7 +124,7 @@ Figura 5. Palabras de reseñas negativas más comunes.
 Cómo se puede ver mirando solo palabras comunes no se puede determinar de forma inmediata el sentimiento de una palabra contando palabras comunes debido a que ambos tipos de reseñas comparten palabras comunes (exceptuando 'bad'). Para esto, es conveniente revisar bigramas y trigramas; es decir, combinaciones de 2 y 3 palabras más comunes. El resultado se muestra en las siguientes gráficas:
 
 
-================================================Bigramas más comunes de reseñas con sentimientos positivos =================================================
+Bigramas más comunes de reseñas con sentimientos positivos:
 
 Word  | Count
 ------------- | -------------
@@ -139,7 +139,7 @@ Word  | Count
 (first, time) | 908
 (dont, know) | 859
 
-================================================Trigramas más comunes de reseñas con sentimientos positivos =================================================
+Trigramas más comunes de reseñas con sentimientos positivos:
 
 Word  | Count
 ------------- | -------------
@@ -160,7 +160,7 @@ Word  | Count
 
 Figura 6. Bigramas y Trigramas más comunes en reseñas positivas.
 
-================================================Bigramas más comunes de reseñas con sentimientos negativos =================================================
+Bigramas más comunes de reseñas con sentimientos negativos:
 
 Word  | Count
 ------------- | -------------
@@ -175,7 +175,7 @@ Word  | Count
 (dont, know) | 1177
 (bad, film) | 1124
 
-================================================Trigramas más comunes de reseñas con sentimientos negativos =================================================
+Trigramas más comunes de reseñas con sentimientos negativos:
 
 Word  | Count
 ------------- | -------------
@@ -201,7 +201,7 @@ De estas gráficas se puede concluir que hay formas de diferenciar los sentimien
 ### **Tokenización**
 
 La tokenización permite separar las oraciones en palabras, y a cada una de ellas se le asigna un valor numérico único, para permitir que los modelos tengan entradas numéricas.
-Este se utiliza con la librería de Python `Keras`, y la función de esta librería `Tokenizer`, y recibe como fuente de datos el conjunto de entrenamiento.
+Este se utiliza con la librería de Python `Keras`, y la función de esta librería `Tokenizer`, y recibe como fuente de datos el conjunto de entrenamiento. Se tendrán en cuenta las 25000 palabras más usadas para facilitar el entrenamiento, especialmente en modelos de aprendizaje profundo.
 
 
 <img width="635" alt="Tokenization" src="https://github.com/mvalenciaar/aprendizaje_maquinas/assets/56141354/0419b6d8-8669-4b31-bdff-80bf2991ec20">
@@ -326,4 +326,4 @@ Gráficamente se ve que se obtuvien muy buenos resultados con respecto al uso de
 
 * Modelos de clasificación más simples, como el de regresión logistica y arbol de decisiones no presentaron un buen desempeño en la tarea de clasificación, lo cual se interpreta que es debido a la tecnica de tokenización usada, la cual funciona mejor para modelos de inteligencia artificial más avanzados. Puesto que el metodo utilizado conserva el orden en el que aparecen las palabras, lo cual puede cambiar el significado de una frase. Este tipo de tokenización es más optimo para redes neuronales que buscan patrones más profundos. Caso contrario sucede con modelos como arbol de decisiones y regresión logistica, los cuales al ser modelos lineales, no comprenden la importancia del orden de las palabras, y se centran más en la frecuencia de las mismas perdiendo datos y patrones importantes para la generalización del modelo.
 
-* El tipo de tokenización usada para los datos de entrada de los modelos propuestos de inteligencia artificial debe depender de los requerimientos, la naturaleza de los datos y el objetivo que se trata de alcanzar/solucionar con el modelo. Como se puede ver la regresión logística es la opción más viable si se utiliza una técnica de tokenización CountVectorizer, la cuál le va a dar prioirdad a las frecuencias de las palabras en vez de secuencialidades entre estas. 
+* El tipo de tokenización usada para los datos de entrada de los modelos propuestos de inteligencia artificial debe depender de los requerimientos, la naturaleza de los datos y el objetivo que se trata de alcanzar/solucionar con el modelo. Como se puede ver la regresión logística es la opción más viable si se utiliza una técnica de tokenización CountVectorizer, la cuál le va a dar prioirdad a las frecuencias de las palabras en vez de secuencialidades entre estas. Con respecto a la técnica usando la función `Tokenizer` es importante definir la cantidad de datos a usar para generar los identificadores únicos. En el presente trabajo se usaron 25000 para facilitar entrenamiento, pero los resultados pudieron mejor usando todo el vocabulario léxico ofrecido en las reseñas.

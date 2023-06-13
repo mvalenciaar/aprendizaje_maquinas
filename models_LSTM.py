@@ -52,7 +52,7 @@ def run_lstm_model(X_train, X_test, y_train, y_test, total_words, max_seq_length
   test_model(model_lstm, X_test, y_test)
   plot_confusion_matrix(model_lstm, X_test, y_test)
 
-def build_lstm_model(total_words, max_seq_length, dropout_rate = 0.2, units = 256):
+def build_lstm_model(total_words, max_seq_length, dropout_rate = 0.75, units = 256):
     '''Crea modelo LSTM simple'''
     model_lstm = Sequential ([
             Embedding(total_words, EMBED_DIM, input_length = max_seq_length),
@@ -72,8 +72,9 @@ def build_lstm_model(total_words, max_seq_length, dropout_rate = 0.2, units = 25
     return model_lstm
 
 def train_model(model_lstm, X_train, y_train):
+  '''Código comentado. Descomentar para revisar proceso de búsqueda exhaustiva'''
   '''Entrena el modelo de forma exhaustiva para encontrar los mejores parámetros'''
-  start = time.time()
+  '''start = time.time()
   grid = GridSearchCV(estimator= model_lstm, param_grid=param_grid, n_jobs=-1, cv=3)
   grid_result = grid.fit(X_train,y_train)
 
@@ -93,7 +94,19 @@ def train_model(model_lstm, X_train, y_train):
       callbacks = callback_list    
   )
 
-  return mlp, history
+  return mlp, history'''
+
+  #Código usando hiperparámetros obtenidos en grid search
+  history = model_lstm.fit(
+      X_train,
+      y_train,
+      validation_split = 0.3,
+      epochs = 7,
+      batch_size = 64,
+      callbacks = callback_list    
+  )
+
+  return model_lstm, history
 
 
 def display_cv_results(search_results):

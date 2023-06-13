@@ -51,7 +51,7 @@ def run_cnn_model(X_train, X_test, y_train, y_test, total_words, max_seq_length)
     test_model_cnn(model_cnn, X_test, y_test)
     plot_confusion_matrix(model_cnn, X_test, y_test)
 
-def build_cnn_model(total_words = 10000, max_seq_length = 130, filters = 64, dropout_rate = 0.35):
+def build_cnn_model(total_words = 10000, max_seq_length = 130, filters = 64, dropout_rate = 0.25):
     '''Crea la red convolucional de una dimensión con una capa de max pooling y dropout'''
     model = Sequential([
         Embedding(total_words, EMBED_DIM, input_length = max_seq_length),
@@ -82,7 +82,9 @@ def display_cv_results(search_results):
       print('Precisión promedia en validación +/- std = {:.4f} +/- {:.4f} with: {}'.format(mean, stdev, param))  
 
 def train_model(model_cnn, X_train, y_train):
+    '''Código comentado. Descomentar para revisar proceso de búsqueda exhaustiva'''
     '''Entrenamiento exhaustivo usando GridSearchCV'''
+    '''
     start= time.time()
     grid = GridSearchCV(estimator= model_cnn, param_grid=param_grid, n_jobs=-1, cv=3)
     grid_result = grid.fit(X_train,y_train)
@@ -104,6 +106,18 @@ def train_model(model_cnn, X_train, y_train):
     )
 
     return mlp, history
+    '''
+
+    #Código usando hiperparámetros obtenidos en grid search
+    history = model_cnn.fit(
+        X_train,
+        y_train,
+        validation_split = 0.3,
+        epochs = 10,
+        callbacks = callback_list    
+    )
+
+    return model_cnn, history
 
 def test_model_cnn(model_cnn, X_test, y_test):
     '''Evalúa el modelo y devuelve la precisión y f1 score'''
